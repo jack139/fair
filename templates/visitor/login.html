@@ -1,0 +1,37 @@
+$def with (signup)
+
+$var title: 登录
+$var css:
+$var js:
+
+
+<div class="caption"><h2>登录</h2></div>
+
+  <form id="f_login" name="f_login" method="post" action="/login">
+     <table class="props_tb">
+        <colgroup>
+            <col style="width:120px" />
+            <col style="width:280px" />
+        </colgroup>
+        <thead>
+            <tr class="even">
+                <th colspan="2">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <td class="name">用户名</td>
+        <td class="t_l"><input type="text" name="name" id="name" /></td>
+      </tr>
+      <tr>
+        <td class="name">密码</td>
+        <td class="t_l"><input type="password" name="passwd" id="pwd" /></td>
+      </tr>
+      <tr>
+        <td class="name" colspan="2"><input type="submit" name="button" id="button" value="登录" /></td>
+      </tr>
+        </tbody>
+    </table> 
+  </form>
+ 
+

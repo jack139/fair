@@ -1,0 +1,47 @@
+$def with (name, str1, skus)
+
+$var title: 平台管理
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #plat1
+
+<div class="caption"><h2>SKU管理</h2></div>
+
+<p><a class="abtn" href="/plat/sku_store_new">添加新SKU</a></p>
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>ID</th>
+		<th width="40%">品名</th>
+		<th>单位</th>
+		<th>参考成本</th>
+		<th>参考售价</th>
+		<th>线上销售</th>
+		<th>状态</th>
+		<th width="15%">备注</th>
+	</tr>
+</thead>
+<tbody>
+
+$for u in skus:
+  <tr><td><a href="/plat/sku_store_edit?sku=$u[0]">$u[9]</a></td>
+  <td>$u[1]</td>
+  <td>$u[5] $u[6]</td>
+  <td>$u[10]</td>
+  <td>$u[8]</td>
+  <td>
+      $if u[11]==1: 
+        App
+      $elif u[11]==3: 
+        B3
+      $elif u[11]==4: 
+        B2B
+  </td>
+  <td>$('' if u[3]==1 else '停用')</td>
+  <td>$u[2]</td></tr>
+</tbody>
+</table>
+

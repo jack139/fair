@@ -1,0 +1,31 @@
+$def with (name, str1, orders, order_status, status)
+
+$var title: 快递员UI
+$var css: /static/css/layout_html5.css
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$if status=='DISPATCH':
+	<h3>待配送 订单</h3>
+$elif status=='ONROAD':
+	<h3>配送中 订单</h3>
+$elif status=='COMPLETE':
+	<h3>已️完成 订单</h3>
+$else:
+	<h3>其他 订单</h3>
+
+<table>
+  <tr>
+    <td class="dotbt">订单编号</td>
+    <td class="dotbt">状态</td>
+    <td class="dotbt">收货地址</td>
+  </tr>
+
+$for u in orders:
+  <tr><td class="dotb"><a href="/delivery/order_view?order=$u['order_id']&status=$u['status']">$str(u['order_id'])</a></td>
+  <td class="dotb">$order_status['APP'][u['status']]</td>
+  <td class="dotb">$u['address'][3] $u['address'][1] $u['address'][2]</td>
+  </tr>
+
+</table>
+

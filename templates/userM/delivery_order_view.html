@@ -1,0 +1,76 @@
+$def with (name, str1, order, shop_name, status, status_type, history)
+
+$var title: 快递员UI
+$var css: /static/css/layout_html5.css
+$var name: $'|'.join(str1) $name
+$var js: 
+$var load: 
+$if status=='DISPATCH':
+	<h3>待配送 订单 $order['order_id']</h3>
+$elif status=='ONROAD':
+	<h3>配送中 订单 $order['order_id']</h3>
+$elif status=='COMPLETE':
+	<h3>已️完成 订单 $order['order_id']</h3>
+$else:
+	<h3>其他 订单 $order['order_id']</h3>
+
+<div>订单编号：$order['order_id']</div>
+<div>订单状态：$status_type['APP'][order['status']]</div>
+<div>付款时间：$(order.get('paid_time',''))</div>
+<div>发货站点：$shop_name</div>
+<div>收货地址：$order['address'][3]</div>
+<div>收货人：$order['address'][1] $order['address'][2]</div>
+
+<form name="settings" method="post" action="/delivery/order_view">
+<input type="hidden" name="order" id="id_order2" value="$order['order_id']"/>
+
+<table>
+  <tr>
+    <td class="dotbt">商品代码</td>
+    <td class="dotbt">品名</td>
+    <td class="dotbt">发货数量</td>
+    <td class="dotbt">价格</td>
+  </tr>
+
+$for i in order['cart']:
+   <tr><td class="dotb">$i['product_id']</td>
+   <td class="dotb">$i['title']</td>
+   <td class="dotb">$i['num2']</td>
+   <td class="dotb">$i['price']</td>
+   </tr>
+
+</table>
+
+<div>小计：$order['total'] 元</div>
+<div>运费：$order['delivery_fee'] 元</div>
+<div>优惠券：$order['coupon_disc'] 元</div>
+<div>其他折扣：$order['first_disc'] 元</div>
+<div>合计：$order['due'] 元</div>
+
+<p>
+$if status=='DISPATCH':
+	<input type="hidden" name="next_status" value="ONROAD"/>
+	<input data-theme="b" type="submit" name="button" id="button" data-icon="check" value="开始配送" />
+$elif status=='ONROAD':
+	<fieldset data-role="controlgroup" data-type="horizontal">
+	<input type="radio" name="next_status" id="s1" value="COMPLETE" checked="checked"/>
+	<label for="s1">配送完成</label>
+	<input type="radio" name="next_status" id="s2" value="FAIL"/>
+	<label for="s2">配送未成功</label>
+	</fieldset>
+	<input data-theme="b" type="submit" name="button" id="button" data-icon="check" value="保存" />
+$else:
+	<input type="hidden" name="next_status" value="ONROAD"/>
+
+<input type="button" name="cancel" id="button2" onclick="location.href='/delivery/order?status=$status';" value="返回" />
+</form>
+
+<div class="article_box">
+  <div>操作日志：</div>
+  <textarea rows="8" cols="80" id="history">
+  $for h in history:
+      $h[0]，用户：$h[1]，操作：$h[2]；
+  </textarea>
+</div>
+
+<br/>

@@ -1,0 +1,36 @@
+$def with (name, str1, orders, order_status)
+
+$var title: 门店POS
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #shop2
+
+<div class="caption"><h2>订货／收货处理</h2></div>
+
+<input type="button" value="建立新订货单" onclick="location.href='/pos/order_new2';" />
+<input type="button" value="返回" onclick="location.href='/pos/inventory';" />
+	
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>工单编号</th>
+		<th>类型</th>
+		<th>状态</th>
+		<th>最后处理时间</th>
+	</tr>
+</thead>
+<tbody>
+
+$for u in orders:
+  <tr><td><a href="/pos/order_view?order=$u['_id']">$str(u['_id'])[-6:]</a></td>
+  <td>$order_status[u['type']]['name']</td>
+  <td>$order_status[u['type']][u['status']] － $u['status']</td>
+  <td>$u['history'][-1][0]</td>
+  </tr>
+
+</tbody></table>
+
+
+

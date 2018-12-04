@@ -1,0 +1,48 @@
+$def with (name, str1, report, date, cnt, new_user, money, shop_name)
+
+$var title: 报表
+$var css:
+$var js: 
+$var name: $'|'.join(str1) $name
+$var load: 
+$var menu: #rept1
+
+<div class="caption"><h2>线上销售清单  <span>（$date）$shop_name</span></h2></div>
+
+<div class="article_box">
+
+<div><input type="button" name="btn_back" value="返回" onclick="history.go(-1);" /></div>
+
+<div>APP订单： $cnt[0] 笔， $money[0] 元， $new_user[0] 新客</div>
+<div>微信订单： $cnt[1] 笔， $money[1] 元， $new_user[1] 新客</div>
+
+<table class="props_tb">
+<thead>
+  <tr class="even">
+    <th>站点名称</th>
+    <th>订单编号</th>
+    <th>付款时间</th>
+    <th>下单手机号</th>
+    <th>付款金额</th>
+    <th>收货姓名</th>
+    <th>收货电话</th>
+    <th>收货地址</th>
+    <th>是否新客</th>
+  </tr>
+</thead>
+<tbody>
+$for u in report:
+  <tr>
+  <td>$u[0]</td>
+  <td><a href="/view_event?todo=$u[1]" target="_blank">$u[1]</a></td>
+  <td>$u[2]</td>
+  <td>$u[3]</td>
+  <td>$u[4]</td>
+  <td>$u[5]</td>
+  <td>$u[6]</td>
+  <td>$u[7]</td>
+  <td>$('是' if u[8]=='1' else '')</td>
+  </tr>
+</tbody>
+</table>
+</div>

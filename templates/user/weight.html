@@ -1,0 +1,44 @@
+$def with (name, str1, skus, shop)
+
+$var title: 门店POS
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #shop5
+
+<div class="caption"><h2>称重</h2></div>
+
+<div class="mod_desc">
+	<p>$shop[1] - $shop[2]</p>
+</div>
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>ID</th>
+		<th>品名</th>
+		<th>门店单价</th>
+		<th>单位</th>
+		<th>销售方式</th>
+		<th>图片</th>
+		<th>上下架</th>
+	</tr>
+</thead>
+<tbody>
+
+$for u in skus:
+  <tr><td><a href="/pos/weight_sku?sku=$u[0]&shop=$shop[0]">$u[9]</a></td>
+  <td>$u[1]</td>
+  <td>$u[8]</td>
+  <td>$u[5] $u[6]</td>
+  <td>$('固定包装' if u[7]==1 else '称重定价')</td>
+  <td>
+    $if u[4]!='':
+      <img width="64" src="/static/image/product/$(u[4][:2])/$u[4]" />
+  </td>
+  <td>$('上架' if u[3]==1 else '下架')</td>
+  </tr>
+</tbody>
+</table>
+

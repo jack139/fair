@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+		body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";font-size:9px;}
+		#allmap {height:500px; width: 100%;}
+		#control{width:100%;}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FwPIA1ykPKIGgSL2jsyoAdSW"></script>
+	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+	<title>获取区域坐标</title>
+</head>
+<body>
+	<div id="allmap"></div>
+	<div>
+		地址：<input type="text" id="addr" value="" /> 
+		<button onclick = "get_point($('#addr').val());">查找</button>
+	</div>
+	<div id="control">
+		<button onclick = "edit_point();">开启编辑功能</button>
+		<button onclick = "finish_point();">关闭编辑功能</button>
+	</div>
+	<br/>
+	<div id="message"></div>
+</body>
+</html>
+<script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	var myGeo = new BMap.Geocoder();
+	var polygon = null;
+	var edit = false;
+	map.centerAndZoom(new BMap.Point(121.45,31.22), 12);
+	map.enableScrollWheelZoom();
+
+	function get_point(addr){
+		myGeo.getPoint(addr, function(point){
+			if (point) {
+				map.centerAndZoom(point, 15);
+				map.clearOverlays();
+				polygon = new BMap.Polygon([
+					point,
+					new BMap.Point(point['lng']+0.005,point['lat']+0.005),
+					new BMap.Point(point['lng'],point['lat']+0.005),
+				], {strokeColor:"red", strokeWeight:2, strokeOpacity:0.5});
+				polygon.addEventListener("click", function(){    
+					if (edit){
+						finish_point();
+					}
+					else{
+						edit_point();
+					}
+				});
+				map.addOverlay(polygon);
+			}else{
+				alert("您选择地址没有解析到结果!");
+			}
+		}, "上海市");
+	}
+
+	function edit_point(){
+		polygon.enableEditing();
+		edit=true;
+
+		return false;
+	}
+
+	function finish_point(){
+ 		var p = polygon.getPath();       //获取位置
+ 		var s = '';
+ 		$.each(p, function(i, item){
+ 			if (s!='') s += ';';
+ 			s = s+'('+item['lat']+','+item['lng']+')'
+ 		});
+		$("#message").html(s);
+		polygon.disableEditing();
+		edit=false;
+
+		return false;
+	}
+
+</script>
+

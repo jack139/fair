@@ -1,0 +1,24 @@
+$def with (name, str1)
+
+$var title: 报表
+$var css:
+$var js: 
+$var name: $'|'.join(str1) $name
+$var load: 
+$var menu: #rept3
+
+<div class="caption"><h2>手工查询</h2></div>
+
+<form name="report_order" method="post" action="/report/query">
+<div class="article_box">
+<p>表名: <input type="text" value="" name="db" size="20"/></p>
+<p>条件: <input type="text" value="{}" name="query" size="80"/></p>
+<p>返回: <input type="text" value="{}" name="projection" size="80"/></p>
+<p><input type="radio" value="table" name="ret_type" checked="checked"/> 返回表格
+<input type="radio" value="text" name="ret_type"/> 返回csv</p>
+</div>
+
+<p><input type="submit" name="button" id="button" value="查询"/><p>
+</form>
+
+<br/>

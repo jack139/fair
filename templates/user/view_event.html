@@ -1,0 +1,167 @@
+$def with (name, str1, order_id, db_todo, last_time, auth, shop, status)
+
+$var title: 查询订单详情
+$var css:
+$var js: 
+$var name: $'|'.join(str1) $name
+$var load: 
+$var menu: #home
+
+<div class="caption"><h2>订单简介</h2></div>
+
+<div class="article_box">
+<p>
+$if auth>0:
+	<a class="abtn" href="#" onclick="document.getElementById('edit').style.display='block';">人工处理</a>
+&nbsp;&nbsp;<a class="abtn" href="#" onclick="document.getElementById('crm').style.display='block';">添加备注</a>
+&nbsp;&nbsp;<a class="abtn" href="javascript:window.opener=null;window.close();">关闭窗口</a>
+</p>
+
+$if auth>0:
+	<div style="display:none;" id="edit">
+	<h4>以下操作会改变此订单操作行为，如果你不清楚自己在干什么，请慎用！</h4>
+	<form name="settings" method="post" action="/view_event">
+		<input type="hidden" name="todo" value="$order_id" />
+		<p>改变事件状态：<select name="status">
+			<option value="">- 请选择 -</option>
+			$if db_todo.get('type') in ['TUAN', 'SINGLE']:
+				$if db_todo['status'] in ['PAID_AND_WAIT', 'FAIL', 'COMPLETE']:
+					<option value="CANCEL_TO_REFUND">CANCEL_TO_REFUND - 取消订单申请退款</option>
+				$if db_todo['status'] in ['PAID_AND_WAIT', 'PAID']:
+					<option value="__CHANGE_ADDR__">修改收货信息</option>
+			$else:
+				$if db_todo['status'] in ['PAID', 'GAP', 'DISPATCH', 'FAIL', 'COMPLETE']:
+					<option value="CANCEL_TO_REFUND">CANCEL_TO_REFUND - 取消订单申请退款</option>
+				<option value="PAID">PAID - 重新等待拣货</option>
+				<option value="DISPATCH">DISPATCH - 重新等待配送</option>
+			<option value="FAIL">FAIL - 配送失败</option>
+			<option value="COMPLETE">COMPLETE - 配送完成</option>
+			<option value="REFUND">REFUND - 已退款</option>
+			$if auth==999:
+				<option value="">-------------------</option>
+				<option value="__NOP__">不改变状态，释放lock</option>
+				<option value="PAID">PAID - 重新等待拣货</option>
+				<option value="DISPATCH">DISPATCH - 重新等待配送</option>
+				<option value="ONROAD">ONROAD - 开始配送</option>
+				<option value="CANCEL">CANCEL - 取消（未支付的订单）</option>
+		</select></p>
+		<p>退款金额：<input type="text" size="10" name="sum_to_refund" id="sum_to_refund" value="$db_todo['due']"
+			pattern="[0-9]+[.]{0,1}[0-9]*" title="必须是数字" /> 元（最多退 $db_todo['due']元）</p>
+
+		$if db_todo.get('type') in ['TUAN', 'SINGLE']:
+			$if db_todo['status'] in ['PAID_AND_WAIT', 'PAID']:
+				<p><div>修改收货人：<input type="text" name="addr_name" value="$db_todo['address'][1]"/></div>
+				<div>修改收货电话：<input type="text" name="addr_tel" value="$db_todo['address'][2]"/></div>
+				<div>修改收货地址：<input type="text" size="80" name="addr_addr" value="$db_todo['address'][3]"/></div>
+				<div>修改区域：<input type="text" name="addr_region" value="$db_todo['address'][8]"/>省市区用英文逗号分隔，修改区域不能跨区域！！！</div></p>
+		<p><input type="submit" name="button" id="button" value="保存"
+			onclick="{if(parseFloat($$('#sum_to_refund').val())>parseFloat('$db_todo['due']')){alert('退款金额不能超过订单金额！');return false;} if(confirm('你清楚你在干什么吗？')){return true;}return false;}" /><p>
+	</form>
+	</div>
+
+<div id="crm0">
+<form name="crmtexts" method="post" action="/view_event">
+<input type="hidden" name="todo" value="$order_id">
+<input type="hidden" name="status" value="__CRM__">
+<h4>已有备注</h4>
+<textarea rows="5" cols="50" name="crmtext0" readonly="readonly">
+$(db_todo['crm_text'] if db_todo.has_key('crm_text') else 'n/a')
+</textarea>
+<div style="display:none;" id="crm">
+<h4>添加新备注</h4>
+<textarea rows="5" cols="50" name="crmtext"></textarea>
+<p><input type="submit" name="button" id="button" value="保存"/><p>
+</form>
+</div>
+
+</div>
+
+<br/>
+<table class="props_tb">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+        	<th>内容</th>
+        </tr>
+</thead>
+<tbody>
+  <tr><td >发货站点</td><td >$shop[0]</td></tr>	
+  <tr><td >PT发货站点</td><td >$shop[1]</td></tr>	
+  <tr><td >订单状态</td><td >$db_todo['status'] - $status</td></tr>
+  <tr><td >注册手机</td><td >$db_todo['uname']</td></tr>
+  <tr><td >最近处理</td><td >
+  	$if last_time>3600:
+  		<b>$(last_time/3600) 小时之前</b>
+  	$elif last_time>60:
+  		<b>$(last_time/60) 分钟之前</b>
+  	$else:
+  		$last_time 秒之前
+  </td></tr>
+  <tr><td >U掌柜订单号</td><td >$db_todo['order_id']</td></tr>
+  $if db_todo.get('type') in ['TUAN', 'SINGLE']:
+  	<tr><td >拼团活动号</td><td ><a href="/report/pt_store?pt_order_id=$db_todo.get('pt_order_id','')">$db_todo.get('pt_order_id','n/a')</a></td></tr>
+  <tr><td >微信商户订单号</td><td >$(db_todo['wx_out_trade_no'] if db_todo.has_key('wx_out_trade_no') else 'n/a')</td></tr>
+  <tr><td >饿了吗订单号</td><td >$(db_todo['elm_order_id'] if db_todo.has_key('elm_order_id') else 'n/a')</td></tr>  
+
+  $if db_todo.get('type') in ['TUAN', 'SINGLE']:
+      <tr><td >购物车</td><td >
+	$for h in db_todo['cart']:
+		<div>$h['tuan_id'] $h.get('title','n/a')</div>
+    $else:
+      <tr><td >购物车</td><td >
+	$for h in db_todo['cart']:
+		<div>$h['product_id'] $h['title'] - 金额：$h['price'] 数量：$h['num2'] + $h.get('numyy',0)</div>
+  <tr><td >商品合计</td><td >$db_todo['total']</td></tr>
+  <tr><td >运费</td><td >$db_todo['delivery_fee']</td></tr>
+  <tr><td >首单立减</td><td >$db_todo['first_disc']</td></tr>
+  <tr><td >抵用券</td><td >$db_todo['coupon_disc']</td></tr>
+  <tr><td >应付金额</td><td >$db_todo['due']</td></tr>
+  <tr><td >支付方式</td><td >$db_todo.get('pay_type', 'n/a')</td></tr>
+  <tr><td >支付宝交易号</td><td >$db_todo.get('ali_trade_no','n/a')</td></tr>
+  <tr><td >微信支付交易号</td><td >$db_todo.get('wx_trade_no','n/a')</td></tr>
+  <tr><td >收货信息</td><td >$(db_todo['address'][8] if len(db_todo['address'])>=9 else '') $db_todo['address'][3] - $db_todo['address'][1] $db_todo['address'][2]</td></tr>
+  <!--tr><td >lock</td><td >$db_todo['lock']</td></tr>
+  <tr><td >man</td><td >$db_todo['man']</td></tr>
+  <tr><td >comment</td><td >$db_todo['comment']</td></tr-->
+  <tr><td >history</td><td >
+  	$if db_todo.has_key('history'):
+  		$for h in db_todo['history']:
+  			$if len(h)>3:
+  				<div>$h[0] $h[1] - $h[2] - $h[3]</div>
+  			$else:
+  				<div>$h[0] $h[1] - $h[2]</div>
+  </td></tr>
+</tbody>
+</table>
+
+<p id="middle">
+<a class="abtn" href="#middle" onclick="document.getElementById('status').style.display='block';">详细诊断</a></p>
+
+<div style="display:none;" id="status">
+
+<table class="props_tb" style="table-layout: fixed;">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+        	<th>内容</th>
+        </tr>
+</thead>
+<tbody>
+  <tr>
+  	<td  width="20%">属性</td>
+  	<td  style="word-wrap: break-word;">值</td>
+  </tr>
+$ all_key=db_todo.keys()
+$ all_key.sort()
+$for i in all_key:
+  <tr>
+  	<td >$i</td>
+  	<td  style="word-wrap: break-word;">$db_todo[i]</td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+
+<p> </p>
+

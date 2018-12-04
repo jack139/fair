@@ -1,0 +1,23 @@
+@charset "utf-8";
+/* CSS Document */
+body{font-size:1.4rem;}
+
+.Inv_Tbg{ background:url(../images/bg-yq2.jpg) no-repeat #ffed5e;background-size:100% auto;-webkit-box-sizing:border-box;overflow:hidden;position:relative;padding-bottom:2rem}
+.Inv_con{margin:0 auto;padding:5rem 0 4rem 0;width:80%;text-align:center;position:relative}
+.Inv_con .tel_txt{font-size:1.5rem;color:#a54200;padding-left:3rem;padding-bottom:.5rem}
+.Inv_con .tel_txt .tel{}
+.pic_tf{position:absolute;width:28%;left:-13%;top:2%}
+.pic_frt{position:absolute;width:30%;right:-15%;bottom:-16%}
+.code_down{background:#f16100;width:90%;margin:0 auto;boder-radius:.6rem;-webkit-border-radius:.6rem;box-sizing:border-box;-webkit-box-sizing:border-box;padding:2rem 1rem;text-align:center}
+.code_down .code_Box{boder-radius:.6rem;border:1px dashed #ffd8be;boder-radius:.6rem;-webkit-border-radius:.6rem;width:65%;margin:0 auto;padding:1rem 0;color:#fff;font-size:2.6rem}
+.code_down .code_Box a,.code_down .code_Box span{color:#fff}
+.yq_btn{text-align:center}
+.yq_btn button{background:#fff000;height:4rem;border-radius:2.5rem;-webkit-border-radius:2.5rem;border:1px solid #d62800;width:85%;margn:0 auto;color:#532100;font-size:2rem}
+.Inv_exp{background:#ffd618;width:90%;margin:3rem auto 0 auto}
+.Inv_exp .txt_tit{position:relative}
+.Inv_exp .txt_tit h4{width:12rem;height:2.4rem;background:url(../images/btn-bg.png) no-repeat;background-size:100%;line-height:2.4rem;color:#fff;margin:0 auto;text-align:center;position:absolute;top:50%;margin-top:-1.2rem;left:50%;margin-left:-6rem}
+.exp_txt{padding:2rem 1.5rem 1.3rem 1.5rem}
+.exp_txt p{margin-top:.5rem}
+.exp_txt p b{color:#f00;font-size:1.8rem;padding:0 .2rem}
+.tip_txt{border-top:1px solid #e1bb09;color:#3f3400;padding:1rem 2rem;font-size:1.2rem}
+.tip_txt span{width:1.5rem;float:left;display:table}

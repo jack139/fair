@@ -1,0 +1,49 @@
+$def with (name, str1, skus, total_paid, shop, tuan_id, title, status, sheng='')
+
+$var title: 批量处理订单
+$var css:
+$var js: 
+$var name: $'|'.join(str1) $name
+$var load: 
+$var menu: #shop8
+
+$if status=='DISPATCH':
+	<div class="caption"><h2>待配送订单  <span>$shop['name']</span></h2></div>
+$elif status=='ONROAD':
+	<div class="caption"><h2>配送中订单  <span>$shop['name']</span></h2></div>
+$else:
+	<div class="caption"><h2>$status状态订单  <span>$shop['name']</span></h2></div>
+
+<div class="article_box">
+
+<p><input type="button" onclick="location.href='/online/batch_job';" value="返回" /></p>
+
+<h3>（目的地：$sheng）$tuan_id - $title</h3>
+
+<br/>
+
+<p>共 $total_paid 个订单 </p>
+
+<table class="props_tb">
+<thead>
+  <tr class="even">
+    <th>　</th>
+    <th>　</th>
+    <th>　</th>
+    <th>　</th>
+    <th>　</th>
+  </tr>
+</thead>
+<tbody>
+$for u in skus:
+	$if loop.index0%5==0:
+		<tr>
+  	<td><a target="_blank" href="/view_event?todo=$u">$u</a></td>
+	$if loop.index0%5==4:
+		</tr>
+<tr>
+</tbody>
+</table>
+
+</div>
+

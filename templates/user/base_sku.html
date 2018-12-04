@@ -1,0 +1,36 @@
+$def with (name, str1, skus)
+
+$var title: 平台管理
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #plat3
+
+<div class="caption"><h2>SKU基础资料</h2></div>
+
+<p><a class="abtn" href="/plat/base_sku_new">添加新SKU基础资料</a></p>
+
+<table class="props_tb">
+<thead>
+        <tr class="even">
+        	<th>品名</th>
+        	<th>产地</th>
+                <th>图片</th>
+                <th>状态</th>
+                <th>备注</th>
+        </tr>
+</thead>
+<tbody>
+
+$for u in skus:
+  <tr><td><a href="/plat/base_sku_edit?base_sku=$u[0]">$u[1]</a></td>
+  <td>$u[5]</td>
+  <td>
+    $if u[4]!='':
+      <img width="64" src="/static/image/product/$(u[4][:2])/$u[4]" />
+  </td>
+  <td>$('可使用' if u[3]==1 else '停用')</td>
+  <td>$u[2]</td></tr>
+</tbody></table>
+

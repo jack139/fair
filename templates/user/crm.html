@@ -1,0 +1,32 @@
+$def with (name, str1)
+
+$var title: 客服CRM
+$var css:
+$var js: 
+$var name: $'|'.join(str1) $name
+$var load: InitInit();
+$var menu: #serv2
+
+<script type="text/javascript">
+function InitInit(){
+}
+</script>
+
+<div class="caption"><h2>查询订单</h2></div>
+
+<form name="report_order" method="post" action="/crm">
+<div class="article_box">
+<p>
+查询条件：
+<div><input type="radio" name="cat" value="order_id" checked="checked"/> “U掌柜”订单号<div/>
+<div><input type="radio" name="cat" value="elm_order_id"/> “饿了吗”订单号<div/>
+<div><input type="radio" name="cat" value="uname" /> 用户注册手机号／微信id<div/>
+<div><input type="radio" name="cat" value="address" /> 收货信息(姓名／地址／电话)<div/>
+</p>
+<p><input type="text" value="" name="content" size="80"/></p>
+</div>
+
+<p><input type="submit" name="button" id="button" value="查询"/><p>
+</form>
+
+<br/>

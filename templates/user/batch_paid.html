@@ -1,0 +1,76 @@
+$def with (name, str1, skus, total_paid, shop, tuan_id, title, sheng='')
+
+$var title: 批量处理订单
+$var css:
+$var js: /static/js/batch_paid.js?ver=1.0 /static/qz-print/deployJava.js /static/qz-print/qz-print.js
+$var name: $'|'.join(str1) $name
+$var load: doFirst();
+$var menu: #shop8
+
+<script type="text/javascript">
+var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+if (isWin){
+	ableToPrint = true;
+	/** * Deploy QZ applet */
+	window["deployQZ"] = deployQZApplet;
+	deployQZApplet();
+	//$$("#product_id").focus();
+}
+else{
+	ableToPrint = false;
+	alertify.warning("只有Windows平台支持打印功能");
+}
+
+var order_pool = [
+	$for u in skus:
+		"$u",
+];
+</script>
+
+<input type="hidden" value="$sheng" />
+
+<div class="caption"><h2>待拣货订单  <span>$shop['name']</span></h2></div>
+
+<div class="article_box">
+
+<p><input type="button" onclick="location.href='/online/batch_job';" value="返回" /></p>
+
+<h3>（目的地：$sheng） $tuan_id - $title</h3>
+
+<p> 共 $total_paid 个待拣货订单（每次最多处理100个订单） </p>
+
+<p><input type="button" onclick="return print_all();" value="批量打印面单" />（批量打印面单）</p>
+<p><input type="button" onclick="return pick_all();" value="批量拣货" />（批量转换订单状态为：DISPATCH 待配送）</p>
+
+<table class="props_tb" id="qz-status" bgcolor="#FFF380">
+<thead>
+  <tr class="even">
+    <th>　</th>
+    <th>　</th>
+    <th>　</th>
+    <th>　</th>
+    <th>　</th>
+  </tr>
+</thead>
+<tbody>
+$for u in skus:
+	$if loop.index0%5==0:
+		<tr>
+  	<td><a target="_blank" href="/view_event?todo=$u">$u</a></td>
+	$if loop.index0%5==4:
+		</tr>
+<tr>
+</tbody>
+</table>
+</div>
+
+<div class="article_box">
+<p>订单号：<input type="text" size="30" value="" id="single_order_id"/><input type="button" onclick="return print_single();" value="补打面单" />（订单状态保持不变）</p>
+</div>
+
+
+<div class="article_box">
+<h3>操作记录:</h3>
+<div id="action_log"></div> 
+</div>
+

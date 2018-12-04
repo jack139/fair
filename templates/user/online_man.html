@@ -1,0 +1,64 @@
+$def with (name, str1, shop_name, pt_shop=False)
+
+$var title: 门店POS
+$var css:
+$var js: /static/js/online_man.js?ver=4.4 /static/qz-print/deployJava.js /static/qz-print/qz-print.js
+$var name: $'|'.join(str1) $name
+$var load: doFirst();
+$var menu: #shop5
+
+<script type="text/javascript">
+$if pt_shop:
+	var pt_shop=true;
+$else:
+	var pt_shop=false;
+
+var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+if (isWin){
+	ableToPrint = true;
+	/** * Deploy QZ applet */
+	window["deployQZ"] = deployQZApplet;
+	deployQZApplet();
+	//$$("#product_id").focus();
+}
+else{
+	ableToPrint = false;
+	alertify.warning("只有Windows平台支持打印功能");
+}
+</script>
+
+<div class="caption"><h2>线上订单 <span>$shop_name</span></h2></div>
+
+<p><input type="button" onclick="location.href='/online/man';" value="手动刷新页面" />&nbsp;&nbsp;&nbsp;&nbsp;
+$if pt_shop:
+	<input type="radio" id="receipt_paper" name="paper_type" value="receipt_paper"  /> 连续纸
+	<input type="radio" id="label_paper" name="paper_type" value="label_paper" checked="checked" /> 标签纸 （拼团格式）
+$else:
+	<input type="radio" id="receipt_paper" name="paper_type" value="receipt_paper" checked="checked" /> 连续纸
+	<input type="radio" id="label_paper" name="paper_type" value="label_paper" /> 标签纸 
+</p>
+
+<p><label id="tips"></label></p>
+
+<table class="props_tb" id="qz-status" bgcolor="#FFF380">
+<tbody><tr><td>&nbsp;</td></tr></tbody></table>
+
+<div class="article_box">
+<h3>等待拣货:</h3>
+<div id="wait_pack"></div> 
+</div>
+
+<div class="article_box">
+<h3>等待配送:</h3>
+<div id="wait_dispatch"></div> 
+</div>
+
+<div class="article_box">
+<h3>其他需人工处理:</h3>
+<div id="wait_status"></div> 
+</div>
+
+<div class="article_box">
+<h3>自动处理:</h3>
+<div id="wait_auto"></div> 
+</div>

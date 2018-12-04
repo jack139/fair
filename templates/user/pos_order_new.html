@@ -1,0 +1,48 @@
+$def with (name, str1, shop, shop_type)
+
+$var title: 门店POS
+$var css:
+$var js: /static/js/pos_order_new.js?v=1.002
+$var name: $'|'.join(str1) $name
+$var load: initAll();
+$var menu: #shop2
+
+
+<div class="caption"><h2>订货 － $shop['name']（$shop_type[shop['type']]）</h2></div>
+
+<p>商品代码：<input type="text" name="product_id" id="product_id" value="" onfocus="$$(this).select();"
+onkeypress="if(event.keyCode==13) keyPress(this);"/>
+<input type="button" name="add_item" value="添加" onclick="return addItem();" /></p>
+<table class="props_tb" id="qz-status">
+<thead>
+	<tr class="even">
+		<th>商品代码</th>
+		<th>品名</th>
+		<th>销售方式</th>
+		<th>单位</th>
+		<th>进货价格</th>
+		<th>订货数量</th>
+		<th>操作</th>
+	</tr>
+</thead>
+<tbody>
+   <tr id="item_list"><td colspan="7">&nbsp;</td></tr>
+</tbody>
+<tfoot>
+   <tr class="even" id="foot_list">
+      <td colspan="7">&nbsp;</td>
+    </tr>
+  </tfoot>
+</table>
+<p>
+
+<div id="checkout_div">
+<input type="button" name="checkout" value="提交订货单" onclick="return checkOut();" />
+<input type="button" value="取消" onclick="initAll();" />
+<input type="button" value="退出" onclick="location.href='/pos/order';" />
+</div>
+
+</p>
+
+<br/>
+

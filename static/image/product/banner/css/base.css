@@ -1,0 +1,56 @@
+*{margin:0}
+*,:before,:after{box-sizing:inherit;-webkit-box-sizing:inherit;}
+html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,thead,tbody,tfood,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0; padding:0;}
+header,footer,section,article,aside,nav,hgroup,address,figure,figcaption,menu,details,time{display:block;}
+table{border-collapse:collapse;border-spacing:0;}
+caption,th{text-align:left;font-weight:normal;}
+html,body,fieldset,img,iframe,abbr{border:0;}
+i,cite,em,var,address,dfn{font-style:normal;}
+[hidefocus],summary{outline:0;}
+ul, menu, dir, *+address{margin:0;padding:0}
+li{list-style:none;}
+h1,h2,h3,h4,h5,h6,small{font-size:100%;font-weight:normal}
+sup,sub{font-size:83%;}
+pre,code,kbd,samp{font-family:inherit;}
+q:before,q:after{content:none;}
+textarea{overflow:auto;resize:none;border:none;line-height:2rem;font-size:1.5rem;color:#888;width:100%}
+label,summary{cursor:default;}
+a,button{cursor:pointer;}
+h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;}
+ins,u,s,a,a:hover{text-decoration:none; display:inline-block;}
+html,body,textarea,input,button,select,keygen,legend{font:62.5%/1.6rem arial,\5b8b\4f53;color:#000;outline:0;box-shadow:none;-webkit-box-shadow:none}
+input[type='text'],input[type='password'],textarea,input[type='search'],input[type='number']{border:none !important;line-height:2rem;font-size:1.5rem;color:#888;width:100%;}
+body{ margin:0;}
+a,a:hover{color:#333;}
+img{width:100% !important;}
+time{color:#888 !important;}
+
+h2{font-size:1.6rem;line-height:2rem;padding:.5rem 0;font-weight:normal}
+h2 small.ico{color: #FFF;text-align:center;font-size:1.2rem !important;-webkit-border-radius:3px;background:#f34b3f;width:1.6rem;height:1.6rem;line-height:1.6rem;display:inline-block;}
+h2 small.ico-bluebg{background:#3195fa}
+.ml1{margin-left:1rem}
+.ml05{margin-left:.5rem}
+.ml2{margin-left:2rem}
+.ml7-5{margin-left:7.5rem}
+.ml9{margin-left:9rem}
+.mR1{margin-right:1rem}
+.mR05{margin-right:.5rem}
+.mR2{margin-right:2rem}
+.mt05{margin-top:.5rem}
+.mt1{margin-top:1rem}
+.mt2{margin-top:2rem}
+.mb1{margin-bottom:1rem}
+.mb2{margin-bottom:2rem}
+.pb2{padding-bottom:2rem}
+
+
+/*浮动-清除*/
+.fL{float:left}
+.fR{float:right}
+.clearfix{*zoom:1}
+.clearfix:before,.clearfix:after{display:table;content:"";}
+.clearfix:after{clear:both}
+
+
+
+

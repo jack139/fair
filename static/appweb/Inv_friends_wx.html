@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <!-- 声明文档使用的字符编码 -->
+    <meta charset='utf-8'>
+    <!-- 优先使用 IE 最新版本和 Chrome -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <!-- 搜索引擎抓取 -->
+    <meta name="robots" content="index,follow"/>
+    <!-- 为移动设备添加 viewport -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+    <!-- iOS 设备 begin -->
+    <meta name="apple-mobile-web-app-title" content="标题">
+    <!-- 添加到主屏后的标题（iOS 6 新增） -->
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <!-- 是否启用 WebApp 全屏模式，删除苹果默认的工具栏和菜单栏 -->
+    <meta name="format-detection" content="telphone=no, email=no"/>
+    <!-- 忽略页面中的数字识别为电话，忽略email识别 -->
+    <title>1小时送达，不满意退款</title>
+    <link href="css/base.css" rel="stylesheet" type="text/css"/>
+    <link href="css/FuLiH.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>   
+</head>
+<script type="text/javascript">
+$(function () {
+	var url = location.search;
+	var code = url.substr(1).split("&")[0].split("?")
+	$("#invite_code").html(code[1]);
+	var phone = code[0];
+	$("#phone").html(phone.substr(0,3)+"****"+phone.substr(-4));
+});
+</script>
+<body>
+	<div class="Inv_Tbg">
+    	<div class="Inv_con">
+        	<p class="tel_txt">您的好友<span class="tel" id="phone"></span>送您一个</p>
+            <img src="images/20txt.png"/>
+            <div class="pic_tf"><img src="images/t-two.png"/></div>
+        	<div class="pic_frt"><img src="images/fruits.png"/></div>
+        </div>
+        
+        <div class="code_down">
+            <p class="code_Box" id="invite_code"></p>
+            <p class="mt2">*点击复制邀请码</p>
+            <div class="yq_btn mt2"><button onclick="javascript:window.location.href='http://app.urfresh.cn/u' ">下载U掌柜,立享优惠</button></div>
+        </div>
+        <div class="Inv_exp">
+        	<header class="txt_tit"><h4>如何获得优惠</h4></header>
+            <article class="exp_txt">
+            	<p>1.在注册页面输入好友的邀请码</p>
+                <img class="mt05" src="images/sryq_sm.png"/>
+                <p>2.注册成功后立得<b>22元</b>抵用券</p>
+            </article>
+            <article class="tip_txt">
+            	<p>注：</p>
+                <p class="mt05"><span>※</span> 22元抵用券分别为1张满14.9减5元券、3张满19.9减3元券及2张满24.9减4元券</p>
+                <p><span>※</span> 1小时送达服务暂时只覆盖上海外环以内地区</p>
+            </article>
+        </div>
+    </div>
+    
+</body>
+</html>

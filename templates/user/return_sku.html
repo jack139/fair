@@ -1,0 +1,49 @@
+$def with (name, str1, sku, base_sku, unit_type, shop, inventory_num)
+
+$var title: 门店POS
+$var css:
+$var name: $'|'.join(str1) $name
+$var js: /static/js/return.js?v=1.001
+$var load: first();
+$var menu: #shop2
+
+<div class="caption"><h2>退货</h2></div>
+<form name="return" method="post" action="/pos/return_sku">
+<input type="hidden" name="product_id" id="id_product_id" value="$sku['product_id']"/>
+<input type="hidden" name="price" id="id_price" value="$inventory_num[1]"/>
+
+<table class="props_tb" id="qz-status">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+                <th>内容</th>
+                <th>说明</th>
+        </tr>
+</thead>
+<tbody>
+<tr><td>ID</td><td>$sku['product_id']</td><td></td></tr>
+<tr><td>品名</td><td id="id_name">$base_sku['name']</td><td></td></tr>
+<tr><td>原产地</td><td>$base_sku['original']</td><td></td></tr>
+
+<tr><td>销售单位</td><td>$unit_type[sku['unit']]</td><td></td></tr>
+<tr><td>定价方式</td><td>
+	$if sku["product_id"][2]==1: 整进整出
+	$elif sku["product_id"][2]==2: 散进散出
+	$else: 散进整出
+    </td><td></td></tr>
+<tr><td>退货单价</td><td id="id_price"><input type="input" name="return_price" id="return_price" onkeyup="check_key();"  
+	onfocus="$$(this).select();" value="$inventory_num[1]"
+	pattern="[0-9]+[.]{0,1}[0-9]*" title="必须是数字"/>&nbsp;元</td>
+	<td>当前售价：$inventory_num[1] 元</td></tr>
+<tr><td>数量</td><td><input type="input" name="weight" id="weight" onkeyup="check_key();"  
+	onfocus="$$(this).select();" value="0"
+	pattern="[0-9]+[.]{0,1}[0-9]*" title="必须是数字"/></td>
+	<td>单位：$unit_type[sku['unit']]</td></tr>
+<tr><td>退款合计</td><td><div id="price_show">0</div></td><td>元</td></tr>
+</tbody></table>
+<p><input type="submit" name="submit" value="退货" 
+   onclick="if (confirm('确定退货吗？')) return true; else return false;"/>
+<input type="button" name="cancel" value="返回" onclick="location.href='/pos/inventory';" /><p>
+</form>
+
+<br/>

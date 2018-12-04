@@ -1,0 +1,113 @@
+$def with (name, str1, sku, invent, unit_type, base_sku, shop, weight, category)
+
+$var title: 门店POS
+$var css:
+$var name: $'|'.join(str1) $name
+$var js: /static/js/pos_invent_sku.js?v=1.003
+$var load: 
+$var menu: #shop2
+
+<script type="text/javascript">
+	ref_price=parseFloat($sku['ref_price']);
+</script>
+
+<div class="caption"><h2>店内库存管理 － $shop[1]（$shop[2]）</h2></div>
+
+<form name="new_sku" id="new_sku" method="post" action="">
+<input type="hidden" name="product_id" id="sku" value="$invent['product_id']"/>
+<input type="hidden" name="shop" id="shop" value="$shop[0]"/>
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>项目</th>
+		<th>内容</th>
+		<th>说明</th>
+	</tr>
+</thead>
+<tbody>
+<tr><td>ID</td><td id="product_id">$invent['product_id']</td><td></td></tr>
+<tr><td>品名</td><td>$base_sku[0]</td><td></td></tr>
+<tr><td>原产地</td><td>$base_sku[1]</td><td></td></tr>
+<tr><td>图片</td><td id="td_image">
+	$if base_sku[2]!="":
+		<img width="64" src="/static/image/product/$(base_sku[2][:2])/$base_sku[2]"/>
+</td><td></td></tr>
+<tr><td>销售单位</td><td>$unit_type</td><td></td></tr>
+<tr><td>进货成本</td><td>$invent['cost_price'] 元</td><td></td></tr>
+<tr><td>参考单价</td><td>$sku['ref_price'] 元</td><td></td></tr>
+<tr><td>门店单价</td><td id="td_price">$invent['price'] 元</td><td id="td_edit_price">
+    $if False and (not weight) and shop[2]!='暗店':
+	<a class="abtn" href="#" onclick="return edit_price();">改门店价格</a>
+</td></tr>
+<tr><td>定价方式</td><td>
+	$if sku["product_id"][2]==1: 整进整出
+	$elif sku["product_id"][2]==2: 散进散出 
+	$else: 散进整出
+    </td><td></td></tr>
+$if weight:
+	<tr><td>重量</td><td>$invent['weight']</td><td>$unit_type</td></tr>
+	<tr><td>价格</td><td>$invent['total']</td><td>元</td></tr>
+<tr><td>站点库存</td><td>$invent['num']</td><td>$shop[1]（$shop[2]）</td></tr>
+<tr><td>上下架</td><td id="online">
+	$if invent['online']==1: 上架
+	$else: 下架
+    </td><td></td></tr>
+
+$if False and (not weight) and invent['product_id'][2]!='2' and shop[2]!='暗店':
+    <tr><td>App 商品类目</td><td id="td_category">$category[invent['category']]</td><td>
+    <select id="selct_category" name="category">
+    $for k in category.keys():
+        <option value="$k"
+        $if invent['category']==k:
+            selected="selected"
+        >$category[k]</option>
+    </select>
+    <a class="abtn" href="#" onclick="return save_category();">保存</a>
+    </td></tr>
+
+    <tr><td>App 销售</td><td id="td_list_in_app">$('是' if invent['list_in_app']!=0 else '不是')</td><td>
+    <input type="radio" name="list_in_app" value="1"  
+	$if invent['list_in_app']==1:
+		checked="checked"
+    /> 是
+    <input type="radio" name="list_in_app" value="0"
+	$if invent['list_in_app']==0:
+		checked="checked"
+    /> 不是
+    <a class="abtn" href="#" onclick="return save_list_in_app();">保存</a>
+    </td></tr>
+
+    <tr><td>App显示排序权重</td><td id="td_sort_weight">$invent['sort_weight']</td><td>
+    <input type="text" id="input_sort_weight" name="sort_weight" size="5"
+         value="$int(invent['sort_weight'])" pattern="[0-9]+" title="必须是数字"/>
+    <a class="abtn" href="#" onclick="return save_sort_weight();">保存</a>
+    </td></tr>
+</tbody></table>
+
+<div>
+<!--input type="button" name="btn_online0" value="上架" onclick="return onlineON();" />
+<input type="button" name="btn_online1" value="下架" onclick="return onlineOFF();" /-->
+$if invent['product_id'][2]=='2' and invent['product_id'][0]!='w':
+	<input type="button" name="btn_weight" value="称重" 
+		onclick="location.href='/pos/weight_sku?sku=$sku['_id']';" />
+$if invent['product_id'][0]!='w':
+	<input type="button" name="btn_return" value="报损" 
+		onclick="location.href='/pos/damage_sku?sku=$sku['_id']';" />
+$if invent['product_id'][0]!='w' and shop[2]!='暗店':
+	<input type="button" name="btn_return" value="退货" 
+		onclick="location.href='/pos/return_sku?sku=$sku['_id']';" />
+<input type="button" name="btn_back" value="返回" onclick="history.go(-1);" />
+</div>
+</form>
+
+<div class="article_box">
+  <div>操作日志：</div>
+  <textarea rows="8" cols="80" id="history">
+  $for h in invent['history']:
+      $h[0]，用户：$h[1]，操作：$h[2]；
+  </textarea>
+</div>
+
+
+<br/>

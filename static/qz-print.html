@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<!-- License:  LGPL 2.1 or QZ INDUSTRIES SOURCE CODE LICENSE -->
+
+<head>
+<meta charset="UTF-8">
+<title>QZ Print Plugin</title>
+<script type="text/javascript" src="/static/js/alertify.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/qz-print/deployJava.js"></script>
+<script type="text/javascript" src="/static/qz-print/qz-print.js"></script>
+</head>
+
+<body>
+<script type="text/javascript">
+function initPrinter(){}
+
+ableToPrint = true;
+/** * Deploy QZ applet */
+window["deployQZ"] = deployQZApplet;
+deployQZApplet();
+
+/* 打印标签 */
+function print_label(product_id, name, unit, price, num, total)
+{
+	if (notReady()) { return; }
+
+	var date=(new Date()).toLocaleString();
+	var order_id = "n000009";
+
+	qz.append("SIZE 74 mm,80 mm\n" +
+		"GAP 3 mm,0 mm\n" +
+		"REFERENCE 0,0\n" +
+		"SPEED 4.0\n" +
+		"DENSITY 8\n" +
+		"SET PEEL OFF\n" +
+		"SET CUTTER OFF\n" +
+		"SET PARTIAL_CUTTER OFF\n" +
+		"SET TEAR ON\n" +
+		"DIRECTION 0\n" +
+		"SHIFT 0\n" +
+		"OFFSET 0 mm\n" +
+		"CLS\n");
+	qz.append("TEXT 30,30,\"TSS24.BF2\",0,1,1,\"订单号："+order_id+"\"\n");
+	qz.append("TEXT 300,30,\"TSS24.BF2\",0,1,1,\"发货站：张江店"+"\"\n");
+	qz.append("TEXT 30,70,\"TSS24.BF2\",0,1,1,\"收货人：王二他妹"+"\"\n");
+	qz.append("TEXT 30,110,\"TSS24.BF2\",0,1,1,\"电话：13812345678"+"\"\n");
+	qz.append("TEXT 30,150,\"TSS24.BF2\",0,1,1,\"上海市浦东新区张江镇张江高科祖冲之路887弄"+"\"\n");
+	qz.append("TEXT 30,190,\"TSS24.BF2\",0,1,1,\"张江四标区84号405"+"\"\n");
+
+	qz.append("BARCODE 30,240,\"128M\",80,0,0,4,12,\"!104" + 
+		order_id[0]+"!099"+order_id.substring(1)+"\"\n");
+	qz.append("TEXT 300,340,\"TSS24.BF2\",0,1,1,\"收货人签名："+"\"\n");
+
+	qz.append("TEXT 30,440,\"TSS24.BF2\",0,1,1,\"订单号："+order_id+"\"\n");
+	qz.append("TEXT 300,440,\"TSS24.BF2\",0,1,1,\"发货站：张江店"+"\"\n");
+	qz.append("BARCODE 30,480,\"128M\",80,0,0,4,12,\"!104" + 
+		order_id[0]+"!099"+order_id.substring(1)+"\"\n");
+
+	qz.append("TEXT 30,580,\"TSS24.BF2\",0,1,1,\"U掌柜 <舌尖甜到心间> urfresh.cn\"\n");
+
+	qz.append("PRINT 1,1\n" + "EOP\n");
+	qz.print();
+
+
+	qz.append("SIZE 74 mm,80 mm\n" +
+		"GAP 3 mm,0 mm\n" +
+		"REFERENCE 0,0\n" +
+		"SPEED 4.0\n" +
+		"DENSITY 8\n" +
+		"SET PEEL OFF\n" +
+		"SET CUTTER OFF\n" +
+		"SET PARTIAL_CUTTER OFF\n" +
+		"SET TEAR ON\n" +
+		"DIRECTION 0\n" +
+		"SHIFT 0\n" +
+		"OFFSET 0 mm\n" +
+		"CLS\n");	
+	qz.append("TEXT 30,30,\"TSS24.BF2\",0,1,1,\"订单号："+order_id+"\"\n");
+	qz.append("TEXT 300,30,\"TSS24.BF2\",0,1,1,\"总数量：190"+"\"\n");
+	qz.append("TEXT 30,70,\"TSS24.BF2\",0,1,1,\"1. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,100,\"TSS24.BF2\",0,1,1,\"2. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,130,\"TSS24.BF2\",0,1,1,\"3. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,160,\"TSS24.BF2\",0,1,1,\"4. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,190,\"TSS24.BF2\",0,1,1,\"5. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,220,\"TSS24.BF2\",0,1,1,\"6. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,250,\"TSS24.BF2\",0,1,1,\"7. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,280,\"TSS24.BF2\",0,1,1,\"8. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,310,\"TSS24.BF2\",0,1,1,\"9. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,340,\"TSS24.BF2\",0,1,1,\"10. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,370,\"TSS24.BF2\",0,1,1,\"11. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,400,\"TSS24.BF2\",0,1,1,\"12. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,430,\"TSS24.BF2\",0,1,1,\"13. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,460,\"TSS24.BF2\",0,1,1,\"14. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,490,\"TSS24.BF2\",0,1,1,\"15. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,520,\"TSS24.BF2\",0,1,1,\"16. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,550,\"TSS24.BF2\",0,1,1,\"17. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,580,\"TSS24.BF2\",0,1,1,\"18. 大苹果大苹果／4个 x 10"+"\"\n");
+	qz.append("TEXT 30,610,\"TSS24.BF2\",0,1,1,\"19. 大苹果大苹果／4个 x 10"+"\"\n");
+
+	qz.append("PRINT 1,1\n" + "EOP\n");
+	qz.print();
+
+/*
+	qz.append("SIZE 50 mm,40 mm\n" +
+		"GAP 3 mm,0 mm\n" +
+		"REFERENCE 0,0\n" +
+		"SPEED 4.0\n" +
+		"DENSITY 8\n" +
+		"SET PEEL OFF\n" +
+		"SET CUTTER OFF\n" +
+		"SET PARTIAL_CUTTER OFF\n" +
+		"SET TEAR ON\n" +
+		"DIRECTION 0\n" +
+		"SHIFT 0\n" +
+		"OFFSET 0 mm\n" +
+		"CLS\n");	
+	qz.append("TEXT 30,60,\"TSS24.BF2\",0,1,1,\"品名："+"\"\n");
+	qz.append("TEXT 100,40,\"TSS24.BF2\",0,2,2,\"红富士大苹果"+"\"\n");
+	qz.append("TEXT 30,150,\"TSS24.BF2\",0,1,1,\"价格："+"\"\n");
+	qz.append("TEXT 100,110,\"TSS24.BF2\",0,4,4,\"999.99"+"\"\n");
+	qz.append("TEXT 30,230,\"TSS24.BF2\",0,1,1,\"单位：公斤"+"\"\n");
+	qz.append("TEXT 30,280,\"TSS24.BF2\",0,1,1,\"编码："+product_id+"\"\n");
+	qz.append("TEXT 220,280,\"TSS24.BF2\",0,1,1,\"产地: 陕西"+"\"\n");
+	qz.append("PRINT 1,1\n" + "EOP\n");
+	qz.print();
+*/
+	console.log('print done.');
+}
+
+function initPrinter()
+{
+	findPrinter("zebra");
+}
+
+</script>
+
+<div style="margin: 0 1em;"><h1 id="title" style="margin:0;">QZ Print Plugin</h1></div>
+
+<table border="1px" cellpadding="5px" cellspacing="0px" id="qz-status" bgcolor="#FFF380">
+<tr>
+    <td valign="top"><h2>All Printers</h2>
+	<input type="button" onClick="findPrinter($('#printer').val())" value="Detect Printer"><br />
+	<input id="printer" type="text" value="zebra" size="15"><br />
+    </td>
+
+    <td valign="top"><h2>Raw Printers Only</h2>
+    	<input type="button" onClick="print_label('k000001', '红富士苹果', '个', '6.80', '1', '6.8')" value="标签" /><br />
+	<input type="button" onClick="printCommand()" value="设置票据打印格式" /><br />
+    </td>
+</tr>
+</table>
+
+</body>
+
+</html>

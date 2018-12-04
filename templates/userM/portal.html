@@ -1,0 +1,16 @@
+$def with (name, str1)
+
+$var title: 首页
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+
+<p> </p>
+
+<ul data-role="listview" data-inset="false" data-filter="false">
+	<li><a href="/delivery/order?status=DISPATCH" data-ajax="false">待配送 订单</a></li>
+	<li><a href="/delivery/order?status=ONROAD" data-ajax="false">配送中 订单</a></li>
+	<li><a href="/delivery/order?status=COMPLETE" data-ajax="false">已完成 订单</a></li>
+	<li><a href="/delivery/order?status=OTHER" data-ajax="false">其他 订单</a></li>
+	<li><a href="/logout" data-ajax="false">退出</a></li>
+</ul>		

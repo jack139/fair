@@ -1,0 +1,24 @@
+$def with (name, str1, settings)
+
+$var title: 帐户设置
+$var css:
+$var js:
+$var name: $str1 $name
+    
+<div class="caption"><h2>帐户设置</h2></div>
+
+<form name="settings" method="post" action="/admin/self_setting">
+
+<div class="article_box">
+<p>用户名：$settings['uname']</p>
+<p>用户等级：$str1</p>
+<p>现登录密码：<input class="formtextinput3" type="password" name="old_pwd" value=""/></p>
+<p>新登录密码：<input class="formtextinput3" type="password" name="new_pwd" value=""/></p>
+<p>再一次输入：<input class="formtextinput3" type="password" name="new_pwd2" value=""/></p>
+</div>
+
+<p><input type="submit" name="button" id="button" value="保存" />
+<input type="button" name="cancel" value="返回" onclick="history.go(-1);" /><p>
+
+</form>
+

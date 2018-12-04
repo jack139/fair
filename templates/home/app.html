@@ -1,0 +1,103 @@
+$def with (source)
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>App下载 - U掌柜</title>
+	<link rel="stylesheet" href="/static/css/layout2.css" />
+	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+/**
+ * Determine the mobile operating system.
+ * This function either returns 'iOS', 'Android' or 'unknown'
+ *
+ * @returns {String}
+ */
+function getMobileOperatingSystem() {
+  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+  if( userAgent.match( /iPad/i ) || userAgent.match( /iPhone/i ) || userAgent.match( /iPod/i ) )
+  {
+    return 'iOS';
+  }
+  else if( userAgent.match( /Android/i ) )
+  {
+    return 'Android';
+  }
+  else
+  {
+    return 'unknown';
+  }
+}
+
+function is_weixin(){
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i)=="micromessenger") {
+                return true;
+        } else {
+                return false;
+        }
+}
+
+$$(function () {
+	var r = getMobileOperatingSystem();
+	if (r=="Android"){
+/*
+		if (is_weixin()){
+			$$("#msg").html("您正在使用微信浏览器。请点击右上角，在菜单中选择\"在浏览器中打开\"，然后进行下载。");
+			return;
+		}
+*/
+		u_record("android","$source");
+		//window.location.href="http://www.f8kam.com/static/u_132.apk";
+		window.location.href="http://a.app.qq.com/o/simple.jsp?pkgname=cn.urfresh.uboss&g_f=991653";
+		return;
+	} else if (r=="iOS"){
+		u_record("ios","$source");
+		//window.location.href="https://itunes.apple.com/cn/app/u-zhang-gui/id1028942879?mt=8";
+		window.location.href="http://a.app.qq.com/o/simple.jsp?pkgname=cn.urfresh.uboss&g_f=991653";
+		return;
+	} else {
+		alert("很抱歉，U掌柜目前只支持iOS和Android手机平台！"); 
+		window.location.href="http://urfresh.cn";
+	}
+});
+
+function u_record(app_type, source)
+{
+	$$.ajax({
+		type: "POST",
+		url: "/u/record",
+		async: true,
+		timeout: 15000,
+		data: {app_type:app_type,source:source},
+		dataType: "json",
+		complete: function(xhr, textStatus)
+		{
+			if(xhr.status==200)
+			{
+			}
+			else
+			{
+				//alert("网络异常！("+xhr.status+")");
+			}
+			
+			return false;
+		}
+	});
+
+}
+
+</script>
+
+<div class="article_box"><h4 id="msg">正在跳转到下载页面...</h3></div>
+<!--div><img src="http://urfresh.cn/static/home/images/logo.png" width="300"></div-->
+
+</body>
+</html>
+
+

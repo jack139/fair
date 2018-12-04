@@ -1,0 +1,111 @@
+$def with (name, str1, shops)
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+		body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";font-size:12px;}
+		#allmap {height:600px; width: 100%;}
+		#control{width:100%;}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FwPIA1ykPKIGgSL2jsyoAdSW"></script>
+	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+	<title>获取区域坐标</title>
+</head>
+<body>
+	<div id="allmap"></div>
+	<br/>
+	<form name="settings" method="post" action="/plat/base_shop_map">
+	<div>
+	$for s in shops:
+		<span id="name_$s['id']">$s['name']</span>
+		<span><input type="hidden" name="poly_$s['id']" id="message_$s['id']" value="$s['poly']" size="50"/></span>
+	</div>
+	<p><input type="submit" name="button" id="button" onclick="return check_button();" value="保存" />
+	<input type="button" name="cancel" value="返回" onclick="history.go(-1);" /></p>
+</form>
+</body>
+</html>
+
+<script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	var myGeo = new BMap.Geocoder();
+	var polygon = {};
+	var edit = {};
+	var poly_data = null;
+	var pp = null;
+	map.centerAndZoom(new BMap.Point(121.45,31.22), 12);
+	map.enableScrollWheelZoom();
+
+	$for s in shops:
+		poly_data = $s['poly_xy'];
+		pp = [];
+
+		$$.each(poly_data, function(i, item){
+			pp[i] = new BMap.Point(item[1],item[0]);
+		});
+		pp.pop(); // 删除最后1个点，因为与第1个相同
+
+		if (pp.length>0){
+			polygon["$s['id']"] = new BMap.Polygon(pp, {
+				strokeColor:"$('green' if s['app_shop']==1 else 'red')", 
+				strokeWeight:2, 
+				strokeOpacity:0.5,
+				fillColor: "$('green' if s['app_shop']==1 else 'red')", 
+				fillOpacity:0.1
+			});
+			edit["$s['id']"] = false;
+			polygon["$s['id']"].addEventListener("click", function(){    
+				if (edit["$s['id']"]){
+					finish_point("$s['id']");
+				}
+				else{
+					edit_point("$s['id']");
+				}
+			});
+
+			map.addOverlay(polygon["$s['id']"]);
+		}
+		else{
+			$$("#name_"+"$s['id']").css({"color":"#afafaf"});
+		}
+
+	function edit_point(shop_id){
+		polygon[shop_id].enableEditing();
+		edit[shop_id]=true;
+		$$("#name_"+shop_id).css({"color":"#ff0000"}).css({"font-size":"18px"});
+
+		return false;
+	}
+
+	function finish_point(shop_id){
+ 		var p = polygon[shop_id].getPath();       //获取位置
+ 		var s = '';
+ 		$$.each(p, function(i, item){
+ 			if (s!='') s += ';';
+ 			s = s+'('+item['lat']+','+item['lng']+')'
+ 		});
+		$$("#message_"+shop_id).val(s);
+		polygon[shop_id].disableEditing();
+		edit[shop_id]=false;
+		$$("#name_"+shop_id).css({"color":"#000000"}).css({"font-size":"12px"});
+
+		return false;
+	}
+
+	function check_button(){
+		var all_saved=true;
+		$$.each(edit, function(key, item){
+			if (item){
+				all_saved=false;
+				alert("不能保存。因为有的区域还在编辑状态！");
+			}
+		});
+
+		return all_saved;
+	}
+</script>
+

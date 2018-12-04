@@ -1,0 +1,21 @@
+$def with (name, str1, db_todo, order_status)
+
+$var title: 报表明细
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #serv2
+
+<h3>Qunar订单信息</h3>
+
+$for u in db_todo:
+  <div><a href="/view_event?todo=$u['order_id']" class="abtn" target="_blank">查看详情</a>
+  	订单号 $u['order_id'] ： &nbsp; $u['uname'] 
+  	（$u['status']－$order_status['APP'][u['status']]）
+  	$if u.has_key('paid_time'):
+  		- 付款时间 $u['paid_time'] 
+  </div>
+
+<br/>
+<p><a class="abtn" href="/crm">返回</a></p>

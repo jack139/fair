@@ -1,0 +1,51 @@
+$def with (name, str1, skus, shop, is_pack)
+
+$var title: 门店POS
+$var css:
+$var js: /static/js/pos_audit_sku.js?v=1.001
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #shop3
+
+<div class="caption"><h2>店内盘点</h2></div>
+
+<div class="article_box">
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>ID</th>
+		<th width="30%">品名</th>
+		<th>单位</th>
+		<th>参考单价</th>
+		<th>门店单价</th>
+		$if is_pack=='w':
+			<th>重量</th>
+			<th>价格</th>
+		<th>库存数量</th>
+		<th>盘点数量</th>
+	</tr>
+</thead>
+<tbody>
+
+$for u in skus:
+  <tr><td>$u[5]</td>
+  <td>$u[8]</td>
+  <td>$u[9] $u[10]</td>
+  <td>$u[12]</td>
+  <td>$u[2]</td>
+  $if is_pack=='w':
+	<td>$u[3]</td>
+	<td>$u[4]</td>
+  <td>$u[6]</td>
+  <td><div id="$u[5]" onclick="edit_num('$u[5]')">$u[7]</div></td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+
+<input type="button" name="cancel" value="试算盘点数据" onclick="location.href='/pos/audit_commit';" />
+<input type="button" name="cancel" value="返回" onclick="history.go(-1);" />
+
+

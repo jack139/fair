@@ -1,0 +1,156 @@
+$def with (name, str1, shop_type)
+
+$var title: 平台管理
+$var css:
+$var name: $'|'.join(str1) $name
+$var js: /static/js/upload.js?v=1.010 http://api.map.baidu.com/api?v=2.0&ak=FwPIA1ykPKIGgSL2jsyoAdSW
+$var load: doFirst();
+$var menu: #plat4
+
+<div class="caption"><h2>新建站点基础资料</h2></div>
+
+<form name="settings" method="post" action="/plat/base_shop_new">
+<input type="hidden" name="image" id="form_image" value=""/>
+
+<table class="props_tb">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+                <th>内容</th>
+                <th>说明</th>
+        </tr>
+</thead>
+<tbody>
+
+<tr><td>站点名</td><td>
+	<input type="text" name="shop_name" value=""/>
+	</td><td>必填</td></tr>
+<tr><td>简称</td><td>
+	<input type="text" name="shortname" value=""/>
+	</td><td>内部使用</td></tr>
+<tr><td>简介</td><td>
+	<textarea rows="3" name="abstract"></textarea>
+	</td><td></td></tr>
+<tr><td>地址</td><td>
+	<textarea rows="3" name="address"></textarea>
+	</td><td></td></tr>
+<tr><td>图片</td><td>
+	<ul id="image-list"></ul>
+	</td><td>在页面下方上传图片</td></tr>
+<tr><td>店员数量</td><td>
+	<input type="text" name="people" value="1" size="8"
+	pattern="[1-9][0-9]*" title="必须是大于0的整数"/> 人
+	</td><td>不能为0</td></tr>
+<tr><td>类型</td><td>
+	<select name="type" id="type">
+	<option value="" selected="selected">--请选择--</option>
+	$for i in shop_type.keys():
+		<option value="$i">$shop_type[i]</option>
+	</select>
+	</td><td></td></tr>
+<tr><td>线上销售</td><td>
+    <input type="radio" name="app_shop" value="1"/> 是
+    <input type="radio" name="app_shop" value="0" checked="checked" /> 否
+    </td><td></td></tr>
+<tr><td>派送半径</td><td>
+	<input type="text" name="radius" value="0" size="8"
+	pattern="[0-9]*" title="必须是整数"/> 公里
+	</td><td>不能小于0</td></tr>
+<tr><td>派送范围</td><td>
+	<div id="allmap" style="height:300px; width: 100%;"></div>
+	<div><span>
+	地址：<input type="text" id="addr" value="" size="10"/> 
+	<button onclick = "get_point($$('#addr').val());return false;">查找</button>
+	</span></div>
+	<input type="text" name="poly" id="message" value="" size="50"/>
+	</td><td>以英文分号分隔地址列表</td></tr>
+<tr><td>加工能力</td><td>
+    <input type="radio" name="worker" value="1" checked="checked" /> 可以加工
+    <input type="radio" name="worker" value="0" /> 不能加工
+    </td><td></td></tr>
+<tr><td>状态</td><td>
+    <input type="radio" name="available" value="1" checked="checked" /> 在使用
+    <input type="radio" name="available" value="0" /> 停用
+    </td><td></td></tr>
+<tr><td>备注</td><td>
+	<textarea rows="3" name="note"></textarea>
+	</td><td>内部备注</td></tr>
+<tbody></table>
+
+<p><input type="submit" name="button" id="button" value="保存" />
+<input type="button" name="cancel" value="返回" onclick="history.go(-1);" /><p>
+</form>
+
+<div class="article_box">
+  <div id="image-main">
+    <form method="post" enctype="multipart/form-data"  action="">
+      <input type="file" name="images" id="images" />
+      <button type="submit" id="btn">上传图片</button>
+    </form> 
+    <div id="response"></div>
+  </div>
+</div>
+
+<br/>
+<div>&nbsp;</div>
+
+<script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	var myGeo = new BMap.Geocoder();
+	var polygon = null;
+	var edit = false;
+
+	map.centerAndZoom(new BMap.Point(121.45,31.22), 12);
+	map.enableScrollWheelZoom();
+
+	$$("#control").hide();
+
+	function get_point(addr){
+		myGeo.getPoint(addr, function(point){
+			if (point) {
+				map.centerAndZoom(point, 14);
+				map.clearOverlays();
+				polygon = new BMap.Polygon([
+					point,
+					new BMap.Point(point['lng']+0.005,point['lat']+0.005),
+					new BMap.Point(point['lng'],point['lat']+0.005),
+				], {strokeColor:"black", strokeWeight:2, strokeOpacity:0.5});
+				polygon.addEventListener("click", function(){    
+					if (edit){
+						finish_point();
+					}
+					else{
+						edit_point();
+					}
+				});
+				map.addOverlay(polygon);
+			}else{
+				alert("您选择地址没有解析到结果!");
+			}
+		}, "上海市");
+	}
+
+	function edit_point(){
+		polygon.enableEditing();
+		edit=true;
+
+		return false;
+	}
+
+	function finish_point(){
+ 		var p = polygon.getPath();       //获取位置
+ 		var s = '';
+ 		$$.each(p, function(i, item){
+ 			if (s!='') s += ';';
+ 			s = s+'('+item['lat']+','+item['lng']+')'
+ 		});
+		$$("#message").val(s);
+		polygon.disableEditing();
+		edit=false;
+
+		return false;
+	}
+
+</script>
+

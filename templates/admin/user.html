@@ -1,0 +1,32 @@
+$def with (name, str1, users)
+
+$var title: 用户管理
+$var css:
+$var js:
+$var name: $str1 $name
+
+<div class="caption"><h2>用户管理</h2></div>
+
+<p><a class="abtn" href="/admin/user_add">添加新用户</a></p>
+
+<table class="props_tb">
+<thead>
+        <tr class="even">
+        	<th>用户名</th>
+        	<th>全名</th>
+                <th>权限</th>
+        </tr>
+</thead>
+<tbody>
+
+$for u in users:
+	<tr>
+	<td><a href="/admin/user_setting?uid=$u[1]">$u[0]</a></td>
+	<td>$u[3]</td>
+	<td>$u[2]</td>
+  	</tr>
+
+</tbody>
+</table>
+
+<br/>

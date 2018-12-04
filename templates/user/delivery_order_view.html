@@ -1,0 +1,87 @@
+$def with (name, str1, order, shop_name, status, status_type, history)
+
+$var title: 快递员UI
+$var css:
+$var name: $'|'.join(str1) $name
+$var js: 
+$var load: 
+$if status=='DISPATCH':
+	$var menu: #deli1
+	<div class="caption"><h2>待配送 订单 $order['order_id']</h2></div>
+$elif status=='ONROAD':
+	$var menu: #deli2
+	<div class="caption"><h2>配送中 订单 $order['order_id']</h2></div>
+$elif status=='COMPLETE':
+	$var menu: #deli3
+	<div class="caption"><h2>已️完成 订单 $order['order_id']</h2></div>
+$else:
+	$var menu: #deli4
+	<div class="caption"><h2>其他 订单 $order['order_id']</h2></div>
+
+<div class="article_box">
+<div>订单编号：$order['order_id']</div>
+<div>订单状态：$status_type['APP'][order['status']]</div>
+<div>付款时间：$(order.get('paid_time',''))</div>
+<div>发货站点：$shop_name</div>
+<div>收货地址：$order['address'][3]</div>
+<div>收货人：$order['address'][1] $order['address'][2]</div>
+</div>
+
+<form name="settings" method="post" action="/delivery/order_view">
+<input type="hidden" name="order" id="id_order2" value="$order['order_id']"/>
+
+<table class="props_tb" id="qz-status">
+<thead>
+	<tr class="even">
+		<th>商品代码</th>
+		<th>品名</th>
+		<th>发货数量</th>
+		<th>价格</th>
+	</tr>
+</thead>
+<tbody>
+$for i in order['cart']:
+   <tr><td>$i['product_id']</td>
+   <td>$i['title']</td>
+   <td>$i['num2']</td>
+   <td>$i['price']</td>
+   </tr>
+</tbody>
+<tfoot>
+   <tr class="even" id="foot_list">
+      <td colspan="4">&nbsp;</td>
+    </tr>
+  </tfoot>
+</table>
+
+<div class="article_box">
+<div>小计：$order['total'] 元</div>
+<div>运费：$order['delivery_fee'] 元</div>
+<div>优惠券：$order['coupon_disc'] 元</div>
+<div>其他折扣：$order['first_disc'] 元</div>
+<div>合计：$order['due'] 元</div>
+</div>
+
+<p>
+$if status=='DISPATCH':
+	<input type="hidden" name="next_status" value="ONROAD"/>
+	<input type="submit" name="submit" value="开始配送" />
+$elif status=='ONROAD':
+	<div><input type="radio" name="next_status" value="COMPLETE" checked="checked"/> 配送完成
+	<input type="radio" name="next_status" value="FAIL"/> 配送未成功</div>
+	<input type="submit" name="submit" value="保存" />
+$else:
+	<input type="hidden" name="next_status" value="ONROAD"/>
+
+<input type="button" name="cancel" value="返回" onclick="location.href='/delivery/order?status=$status';" /><p>
+</form>
+
+<div class="article_box">
+  <div>操作日志：</div>
+  <textarea rows="8" cols="80" id="history">
+  $for h in history:
+      $h[0]，用户：$h[1]，操作：$h[2]；
+  </textarea>
+</div>
+
+<br/>

@@ -1,0 +1,45 @@
+$def with (content)
+
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>$content.title - Kam Cloud</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+  <link rel="stylesheet" href="/static/css/jquery.mobile-1.3.2.min.css" type="text/css" media="screen"" />
+  <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.mobile-1.3.2.min.js"></script>
+  
+</head> 
+
+<body> 
+
+<div data-role="page">
+
+	<div data-role="header" data-position="fixed" id="my_head">
+		U掌柜
+	</div><!-- /header -->
+
+	<div data-role="content">	
+        <!-- main content start here -->
+        $:content
+        <!-- main content end here -->
+	</div><!-- /content -->
+
+  <div data-role="footer" data-position="fixed" id="my_footer">
+  	  &nbsp;&nbsp; urfresh.cn U掌柜 &copy; 2015
+  </div> 
+
+  $if content.css:
+    $for f in content.css.split():
+      <link rel="stylesheet" href="$f" type="text/css" media="screen"/>
+
+  $if content.js:
+    $for f in content.js.split():
+      <script type="text/javascript" src="$f"></script>
+
+</div><!-- /page -->
+
+</body>
+</html>
+

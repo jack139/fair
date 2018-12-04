@@ -1,0 +1,28 @@
+$def with (name, str1, info)
+
+$var title: 数据统计
+$var css:
+$var js:
+$var name: $str1 $name
+    
+<div class="caption"><h2>数据统计</h2></div>
+
+<table class="props_tb">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+                <th>数据</th>
+        </tr>
+</thead>
+<tbody>
+<tr><td class="name">活动用户</td>   <td>$info['active']</td></tr>
+<tr><td class="name">停用用户</td>   <td>$info['nonactive']</td></tr>
+<tr><td class="name">系统用户</td>   <td>$info['admin']</td></tr>
+<tr><td class="name">session总数</td><td>$info['sessions']</td></tr>
+<tr><td class="name">device总数</td> <td>$info['device']</td></tr>
+<tr><td class="name">todo总数</td>   <td>$info['todo']</td></tr>
+<tr><td class="name">SLEEP总数</td>   <td>$info['sleep']</td></tr>
+<tr><td class="name">lock总数</td>   <td>$info['lock']</td></tr>
+</tbody></table>
+
+<br/>

@@ -1,0 +1,46 @@
+$def with (name, str1, info)
+
+$var title: 系统状态
+$var css:
+$var js:
+$var name: $str1 $name
+
+<div class="caption"><h2>系统状态</h2></div>
+
+<div class="article_box">
+	<h3>系统状态</h3>
+	<p>$info['uptime']</p>
+	$for l in info['df_data']:
+		<p>&nbsp;&nbsp;$l</p>
+
+	<p>
+<table class="props_tb"><tbody>
+        <thead>
+            <tr class="even">
+                <th >进程</th><th >进程ID</th>
+            </tr>
+        </thead>
+<tr><td class="name">fair.pyc</td> <td class="t_l">$info['takit']</td></tr>
+</tbody></table>
+</p>
+</div> 
+
+<div class="article_box">
+	<h3>Nginx error日志</h3>
+$for l in info['error_log']:
+	<p>&nbsp;&nbsp;$l</p>
+</div>
+
+<div class="article_box">
+	<h3>uWSGI - fair日志</h3>
+$for l in info['uwsgi_log']:
+	<p>&nbsp;&nbsp;$l</p>
+</div>
+
+<div class="article_box">
+	<h3>processor - fair日志: </h3>
+$for l in info['process_log']:
+	<p>&nbsp;&nbsp;$l</p>
+</div>
+
+<br/>

@@ -1,0 +1,38 @@
+$def with (name, str1, skus, region_name)
+
+$var title: 报表
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #rept4
+
+<div class="caption"><h2>拼团活动统计</h2></div>
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>ID</th>
+		<th>区域</th>
+		<th width="30%">活动标题</th>
+		<th >已成团</th>
+		<th >拼团中</th>
+		<th >拼团失败</th>
+	</tr>
+</thead>
+<tbody>
+
+$for u in skus:
+  <tr><td><a href="/report/pt_store?tuan_id=$u['tuan_id']">$u['tuan_id']</a></td>
+  <td>
+	$for i in region_name.keys(): 
+		$if i in u['region_id']:
+			$region_name[i],
+  </td>
+  <td>$u['title']</td>
+  <td><a href="/report/pt_store?tuan_id=$u['tuan_id']&status=SUCC">$u['pt_orders'][0]</a></td>
+  <td><a href="/report/pt_store?tuan_id=$u['tuan_id']&status=OPEN">$u['pt_orders'][1]</a></td>
+  <td><a href="/report/pt_store?tuan_id=$u['tuan_id']&status=FAIL">$u['pt_orders'][2]</a></td>
+  </tr>
+</tbody>
+</table>

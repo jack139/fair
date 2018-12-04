@@ -1,0 +1,33 @@
+$def with (name, str1, report)
+
+$var title: 客户反馈
+$var css:
+$var js: 
+$var name: $'|'.join(str1) $name
+$var load: 
+$var menu: #serv3
+
+<div class="caption"><h2>客户反馈  <span>（最近30天）</span></h2></div>
+
+<div class="article_box">
+
+<div><input type="button" name="btn_back" value="返回" onclick="history.go(-1);" /></div>
+
+<table class="props_tb">
+<thead>
+  <tr class="even">
+    <th>用户号码</th>
+    <th>时间</th>
+    <th width="70%">内容</th>
+  </tr>
+</thead>
+<tbody>
+$for u in report:
+  <tr>
+  <td>$u['uname']</td>
+  <td>$u['time']</td>
+  <td>$u['voice']</td>
+  </tr>
+</tbody>
+</table>
+</div>

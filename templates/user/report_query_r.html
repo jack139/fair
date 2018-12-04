@@ -1,0 +1,32 @@
+$def with (name, str1, header, table)
+
+$var title: 报表
+$var css:
+$var js: 
+$var name: $'|'.join(str1) $name
+$var load: 
+$var menu: #rept3
+
+<div class="caption"><h2>手工查询</h2></div>
+
+<div class="article_box">
+
+<div><input type="button" name="btn_back" value="返回" onclick="history.go(-1);" /></div>
+
+<table class="props_tb">
+<thead>
+  <tr class="even">
+  $for i in header:
+    <th>$i</th>
+  </tr>
+</thead>
+<tbody>
+$for u in table:
+  <tr>
+  $for v in u:
+    <td>$v</td>
+  </tr>
+</tbody>
+</table>
+
+</div>

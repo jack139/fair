@@ -1,0 +1,25 @@
+$def with (name, str1, settings)
+
+$var title: 帐户设置
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #seti
+
+<div class="caption"><h2>帐户设置</h2></div>
+
+<form name="settings" method="post" action="/settings_user">
+<div class="article_box">
+<p>用户名：$settings['uname']</p>
+<p>全名：$settings['full_name']</p>
+<b>修改登录密码：</b>如果不打算修改登录密码，以下可不填
+<p>现登录密码：<input type="password" name="old_pwd" value=""/></p>
+<p>新登录密码：<input type="password" name="new_pwd" value=""/></p>
+<p>再一次输入：<input type="password" name="new_pwd2" value=""/></p>
+</div> 
+<p><input type="submit" name="button" id="button" value="保存" />
+<input type="button" name="cancel" value="返回" onclick="history.go(-1);" /><p>
+
+</form>
+

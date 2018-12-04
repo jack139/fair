@@ -1,0 +1,43 @@
+$def with (name, str1, audit)
+
+$var title: 门店POS
+$var css:
+$var js: /static/js/pos_audit.js?ver=0.001
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #shop3
+
+<div class="caption"><h2>店内盘点</h2></div>
+
+<div class="article_box">
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>期初时间</th>
+		<th>期末时间</th>
+		<th>状态</th>
+		<th>其他</th>
+	</tr>
+</thead>
+<tbody>
+
+$for u in audit:
+  <tr>
+
+  <td>$u['begin_date']</td>
+  <td>$u['end_date']</td>
+  <td>$u['status']</td>
+  <td>
+  $if u['status']=='OPEN':
+  	<a class="abtn" href="/pos/audit_sku">盘点</a>
+  $else:
+  	<a class="abtn" href="/pos/audit_view?audit=$u['_id']">查看</a>
+  </td>
+  <tr>
+</tbody>
+</table>
+
+<input type="button" name="cancel" value="建立新账期" onclick="return new_audit();" />
+
+</div>

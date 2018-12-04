@@ -1,0 +1,109 @@
+$def with (name, str1, order, sku, shop, order_status, base_shop, next_status, history)
+
+$var title: 仓储管理
+$var css:
+$var name: $'|'.join(str1) $name
+$var js: /static/js/stock_order_view.js?ver=0.002 /static/qz-print/deployJava.js /static/qz-print/qz-print.js
+$var load: first();
+$var menu: #stoc3
+
+$if not next_status:
+	<!--script type="text/javascript">
+	var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+	if (isWin){
+		ableToPrint = true;
+		/** * Deploy QZ applet */
+		window["deployQZ"] = deployQZApplet;
+		deployQZApplet();
+		//$$("#product_id").focus();
+	}
+	else{
+		ableToPrint = false;
+		alertify.warning("只有Windows平台支持打印功能");
+	}
+	</script-->
+
+<div class="caption"><h2>$order_status[order['type']]['name']</h2></div>
+
+<div class="article_box">
+<div id="id_order">订单编号：$str(order['_id'])[-6:]</div>
+<div id="id_status">当前状态：$order_status[order['type']][order['status']]（$order['status']）</div>
+$if order['shop_from']!='':
+	<div id="id_from">发货站点：$shop[order['shop_from']]</div>
+<div id="id_to">收货站点：$shop[order['shop_to']]</div>
+</div>
+
+<form name="settings" method="post" action="/stock/order_view">
+<input type="hidden" name="next_status" value="$(next_status if next_status else '')"/>
+<input type="hidden" name="order" id="id_order2" value="$order['_id']"/>
+<input type="hidden" name="order_type" value="$order['type']"/>
+
+$if order['shop_from']=='':
+	<div>发货仓库：<select name="shop_from" id="shop_from" onchange="checkInvent();">
+		<option value="-" selected="selected">--请选择--</option>
+	$for k in base_shop:
+		<option value="$k['_id']">$k['name']</option>
+	</select></div>
+
+<table class="props_tb" id="qz-status" bgcolor="#FFF380">
+<thead>
+	<tr class="even">
+		<th>商品代码</th>
+		<th>品名</th>
+		<th>销售方式</th>
+		<th>单位</th>
+		<th>库存数量</th>
+		<th>订货数量</th>
+		<th>发货数量</th>
+		<th>收货数量</th>
+		<th>备注</th>
+	</tr>
+</thead>
+<tbody>
+$for i in order['cart']:
+   <tr><td class="only4tag" id="$i['product_id']">$i['product_id']</td>
+   <td id="$i['product_id']_name">$i['name']</td>
+   <td>$('固定包装' if sku[i['product_id']][0]==1 else '称重定价')</td>
+   <td id="$i['product_id']_unit">$sku[i['product_id']][1]</td>
+   <td id="$i['product_id']_invent">0</td>
+   <td id="$i['product_id']_book">$(('%d' % i['num']) if i['product_id'][2] in ('1','3') else ('%.2f' % i['num']))</td>
+   <td id="$i['product_id']_send">
+   $if next_status:
+	<input type="text" class="only_4_tag" name="$i['product_id']" 
+	id="$i['product_id']" size="8" 
+	value="$(('%d' % i['num']) if i['product_id'][2] in ('1','3') else ('%.2f' % i['num']))" />
+   $else:
+   	$if i.has_key('send_num'):
+		$(('%d' % i['send_num']) if i['product_id'][2] in ('1','3') else ('%.2f' % i['send_num']))
+   </td>
+   <td id="$i['product_id']_recv">
+   $if i.has_key('recv_num'):
+	$(('%d' % i['recv_num']) if i['product_id'][2] in ('1','3') else ('%.2f' % i['recv_num']))
+   </td>
+   <td>&nbsp;</td></tr>
+</tbody>
+<tfoot>
+   <tr class="even" id="foot_list">
+      <td colspan="9">&nbsp;</td>
+    </tr>
+  </tfoot>
+</table>
+
+<p>
+$if next_status:
+	<input type="submit" name="submit" id="button" value="$order_status[order['type']][next_status]" 
+	onclick="return checkNum();"/>
+$else:
+	<input type="button" name="print" value="打印" onclick="doPrint('采购');" />
+<input type="button" name="cancel" value="返回" onclick="location.href='/stock/order';" /><p>
+</form>
+
+<div class="article_box">
+  <div>操作日志：</div>
+  <textarea rows="8" cols="80" id="history">
+  $for h in history:
+      $h[0]，用户：$h[1]，操作：$h[2]；
+  </textarea>
+</div>
+
+<br/>

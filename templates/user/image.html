@@ -1,0 +1,22 @@
+$def with (name, str1)
+
+$var title: 图片库
+$var css:
+$var js: /static/js/image.js?v=1.010
+$var name: $'|'.join(str1) $name
+$var load: doFirst();
+$var menu: #plat3
+
+<h3>图片库</h3>
+
+<div id="image-main">
+    <form method="post" enctype="multipart/form-data"  action="">
+      <input type="file" name="images" id="images" />
+      <button type="submit" id="btn">Upload Files!</button>
+    </form>
+ 
+    <div id="response"></div>
+    <ul id="image-list"></ul>
+</div>
+
+<br/>

@@ -1,0 +1,299 @@
+$def with (name, str1, sku, base_sku, unit_type, cate, shops)
+
+$var title: 平台管理
+$var css:
+$var name: $'|'.join(str1) $name
+$var js: /static/js/sku_store.js?v=1.006
+$var load: select_base();
+$var menu: #plat1
+
+<div class="caption"><h2>修改SKU</h2></div>
+
+<form name="new_sku" id="new_sku" method="post" action="/plat/sku_store_edit">
+<input type="hidden" name="sku" value="$sku['_id']"/>
+<input type="hidden" name="old_base_sku" value="$sku['base_sku'].id"/>
+
+<p>请选择SKU基础资料：
+<select id="base_sku" name="base_sku" onchange="select_base()">
+	<option value="">--请选择--</option>
+$for k in base_sku:
+	<option value="$k[0]"
+		$if sku['base_sku'].id==k[0]:
+			selected="selected"
+	>$k[1]</option>
+</select>
+</p>
+
+
+<table class="props_tb">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+                <th>内容</th>
+                <th>说明</th>
+        </tr>
+</thead>
+<tbody>
+<tr><td>ID</td><td>$sku['product_id']</td><td></td></tr>
+<tr><td>品名</td><td>
+	<input type="text" name="sku_name" id="sku_name" value="" disabled="true"/>
+	</td><td>此处不可修改</td></tr>
+<tr><td>商品类目</td><td>
+<select id="category" name="category">
+$for k in cate.keys():
+	<option value="$k"
+	$if sku['category']==k:
+		selected="selected"
+	>$cate[k]</option>
+</select>
+<input type="checkbox" name="category_refresh" value="all"/>全部刷新
+</td><td></td></tr>
+<tr><td>文描</td><td>
+	<textarea rows="3" name="abstract" id="abstract" disabled="true"></textarea>
+	</td><td>此处不可修改</td></tr>
+<tr><td>原产地</td><td>
+	<input type="text" name="original" id="original" value="" disabled="true"/>
+	</td><td>此处不可修改</td></tr>
+
+<tr><td>图片</td><td>
+	<ul id="image-list"></ul>
+	</td><td></td></tr>
+
+<tr><td>保质期</td><td>
+	<input type="text" name="fresh_time" id="fresh_time" value="$sku['fresh_time']" 
+	pattern="[0-9]+" title="必须是数字"/> 天
+	</td><td>0表示无限制</td></tr>	
+
+<tr><td>销售单位</td><td>
+	<select name="unit" id="unit">
+	<option value="" selected="selected">--请选择--</option>
+	$for i in unit_type.keys():
+		<option value="$i"
+			$if i==sku['unit']:
+				selected="selected"
+		>$unit_type[i]</option>
+	</select>
+	</td><td></td></tr>
+
+<tr><td>区域</td><td>
+	$if sku['product_id'][0]=='1':
+		上海
+	$else:
+		未知
+    </td><td></td></tr>
+
+<tr><td>代码分类</td><td>
+	$if sku['product_id'][1]=='1':
+		生鲜
+	$elif sku['product_id'][1]=='2':
+		食品
+	$elif sku['product_id'][1]=='9':
+		组合
+	$elif sku['product_id'][1]=='0':
+		物料
+	$else:
+		未知
+    </td><td></td></tr>
+
+<tr><td>商品种类</td><td>
+	$if sku['product_id'][2]=='1':
+		整进整出
+	$elif sku['product_id'][2]=='2':
+		散进散出
+	$elif sku['product_id'][2]=='3':
+		散进整出
+	$else:
+		未知
+    </td><td></td></tr>
+
+<tr><td>参考成本</td><td>
+	<input type="text" name="ref_cost" id="ref_cost" value="$sku['ref_cost']"
+	pattern="[0-9]+[.]{0,1}[0-9]*" title="必须是数字"/> 元
+	</td><td>门店进货价（只用于门店核算成本）</td></tr>
+
+<tr><td>参考售价</td><td>
+	<input type="text" name="ref_price" id="ref_price" value="$sku['ref_price']" size="15"
+	pattern="[0-9]+[.]{0,1}[0-9]*" title="必须是数字"/> 元
+	<input type="checkbox" name="ref_price_refresh2" value="all"/>全部刷新<br/>
+	<select multiple="multiple" size="5" name="ref_price_refresh">
+	$for i in shops:
+		<option value ="$i[0]">$i[1]</option>
+	</select>    
+
+	</td><td>门店默认售价；<br/>选站点刷新指定站点价格，<br/>勾选“全部刷新”刷新所有价格</td></tr>
+
+<tr><td>最低价格</td><td>
+	<input type="text" name="min_price" value="$sku['min_price']" 
+	pattern="[0-9]+[.]{0,1}[0-9]*" title="必须是数字"/> 元
+	</td><td>用于防呆检查</td></tr>
+<tr><td>最高价格</td><td>
+	<input type="text" name="max_price" value="$sku['max_price']" 
+	pattern="[0-9]+[.]{0,1}[0-9]*" title="必须是数字"/> 元
+	</td><td>用于防呆检查</td></tr>
+
+<tr><td>App销售</td><td>
+$if sku['product_id'][2]=='2':
+    <input type="radio" name="list_in_app" value="0" checked="checked"/> 散进散出商品不能app销售
+$else:
+    <input type="radio" name="list_in_app" value="0"
+	$if sku['list_in_app']==0:
+		checked="checked"
+    /> 不是
+    <input type="radio" name="list_in_app" value="1"  
+	$if sku['list_in_app']==1:
+		checked="checked"
+    /> APP销售
+    <input type="radio" name="list_in_app" value="3"  
+	$if sku['list_in_app']==3:
+		checked="checked"
+    /> 整箱预售
+    <input type="radio" name="list_in_app" value="4"  
+	$if sku['list_in_app']==4:
+		checked="checked"
+    /> B2B销售
+<input type="checkbox" name="list_in_app_refresh" value="all"/>全部刷新
+
+</td><td>散进散出商品不能app销售</td></tr>
+
+<tr><td>App显示的标题</td><td>
+	<input type="text" name="app_title" id="app_title" value="$sku['app_title']" />
+	</td><td>只会在app中显示</td></tr>
+
+<tr><td>App推荐标签</td><td>
+    <input type="radio" name="promote" value="1"  
+	$if sku['promote']==1:
+		checked="checked"
+    /> 是
+    <input type="radio" name="promote" value="0"
+	$if sku['promote']==0:
+		checked="checked"
+    /> 不是
+    </td><td></td></tr>
+
+<tr><td>App显示排序权重</td><td>
+	<input type="text" name="sort_weight" value="$int(sku['sort_weight'])" size="15"
+	pattern="[0-9]+" title="必须是数字"/>
+	<input type="checkbox" name="sort_weight_refresh" value="all"/>全部刷新
+	</td><td>0排最前，999排最后</td></tr>
+
+<tr><td>App最大购买量</td><td>
+	<input type="text" name="maximun" value="$sku['maximun']" 
+	pattern="[0-9]+" title="必须是数字"/>
+	</td><td>0表示无限制</td></tr>
+
+<tr><td>App赠品</td><td>
+    <input type="radio" name="is_gift" value="1"  
+	$if sku['is_gift']==1:
+		checked="checked"
+    /> 是
+    <input type="radio" name="is_gift" value="0"
+	$if sku['is_gift']==0:
+		checked="checked"
+    /> 不是
+    </td><td></td></tr>
+<tr><td>App促销品</td><td>
+    <input type="radio" name="is_onsale" value="1"
+	$if sku['is_onsale']==1:
+		checked="checked"
+    /> 是
+    <input type="radio" name="is_onsale" value="0"
+	$if sku['is_onsale']==0:
+		checked="checked"
+    /> 不是
+    </td><td></td></tr>
+<tr><td>App促销价格</td><td>
+	<input type="text" name="special_price" id="special_price" value="$sku['special_price']" 
+	pattern="[0-9]+[.]{0,1}[0-9]*" title="必须是数字"/> 元
+	</td><td>为促销品时，此价格才有意义</td></tr>
+
+<tr><td>App首单可见</td><td>
+    <input type="radio" name="first_order" value="1" 
+    	$if sku.get('first_order',0)==1:
+		checked="checked"
+    /> 首单可见
+    <input type="radio" name="first_order" value="0" 
+    	$if sku.get('first_order',0)==0:
+		checked="checked"
+    /> 全部可见
+    </td><td></td></tr>
+
+<tr><td>App售完隐藏</td><td>
+    <input type="radio" name="hide_after_0" value="1" 
+    	$if sku.get('hide_after_0',0)==1:
+		checked="checked"
+    /> 是
+    <input type="radio" name="hide_after_0" value="0" 
+    	$if sku.get('hide_after_0',0)==0:
+		checked="checked"
+    /> 否
+    </td><td></td></tr>
+
+<tr><td>是否送货</td><td>
+    <input type="radio" name="shipping" value="1" 
+    	$if sku['shipping']==1:
+		checked="checked"
+    /> 可送货上门
+    <input type="radio" name="shipping" value="0" 
+    	$if sku['shipping']==0:
+		checked="checked"
+    /> 只能自提
+    </td><td></td></tr>
+<tr><td>送货费</td><td>
+    <input type="radio" name="free_delivery" value="0" 
+    	$if sku['free_delivery']==0:
+		checked="checked"
+    /> 按规则收取
+    <input type="radio" name="free_delivery" value="1" 
+    	$if sku['free_delivery']==1:
+		checked="checked"
+    /> 免送货费
+    </td><td></td></tr>
+<tr><td>是否可到付</td><td>
+    <input type="radio" name="wxpay_only" value="1" 
+    	$if sku['wxpay_only']==1:
+		checked="checked"
+    /> 只能网上支付
+    <input type="radio" name="wxpay_only" value="0" 
+    	$if sku['wxpay_only']==0:
+		checked="checked"
+    /> 可以货到付款
+    </td><td>C.O.D.</td></tr>
+
+<tr><td>指定门店上架</td><td>
+<select multiple="multiple" size="5" name="shop_online">
+$for i in shops:
+	<option value ="$i[0]" 
+		$if i[0] in sku.get('online',[]):
+			selected="selected"
+	>$i[1]</option>
+</select>    
+</td><td>不选表示未指定，均上架</td></tr>
+
+<tr><td>状态</td><td>
+    <input type="radio" name="available" value="1" 
+    	$if sku['available']==1:
+		checked="checked"
+    /> 在使用
+    <input type="radio" name="available" value="0" 
+    	$if sku['available']==0:
+		checked="checked"
+    /> 停用
+    </td><td>停用时，所有门店库存将下架，<br/>优先级高于“指定门店上架”</td></tr>
+
+<tr><td>备注</td><td>
+	<textarea rows="3" name="note">$sku['note']</textarea>
+	</td><td>内部备注</td></tr>
+</tbody></table>
+<p><input type="button" name="button" id="button" value="保存" onclick="check_all();"/>
+<input type="button" name="cancel" value="返回" onclick="history.go(-1);" /><p>
+</form>
+
+<div class="article_box">
+  <div>操作日志：</div>
+  <textarea rows="8" cols="80" id="history">
+  $for h in sku['history']:
+      $h[0]，用户：$h[1]，操作：$h[2]；
+  </textarea>
+</div>
+
+<br/>

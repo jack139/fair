@@ -1,0 +1,49 @@
+$def with (name, str1, skus, region_name)
+
+$var title: 报表
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #rept4
+
+<div class="caption"><h2>拼团活动统计</h2></div>
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>ID</th>
+		<th>区域</th>
+		<th>类型</th>
+		<th >过期时间</th>
+		<th >差N人</th>
+		<th >状态</th>
+	</tr>
+</thead>
+<tbody>
+
+$for u in skus:
+  <tr><td><a href="/report/pt_store?pt_order_id=$u['pt_order_id']">$u['pt_order_id']</a></td>
+  <td>
+	$for i in region_name.keys(): 
+		$if i in u['region_id']:
+			$region_name[i],
+  </td>
+  <td>$('拼团' if u['type']=='TUAN' else '单人购')</td>
+  <td>$u['expire_time']</td>
+  <td>$u['need']</td>
+  <td>
+  $if u['status']=='OPEN': 
+  	拼团中
+  $elif u['status']=='SUCC': 
+  	成团
+  $elif u['status'] in ['FAIL1', 'FAIL2', 'FAIL3']: 
+  	拼团失败
+  $elif u['status']=='WAIT': 
+  	待开团
+  $else: 
+  	$u['status']
+  </td>
+  </tr>
+</tbody>
+</table>

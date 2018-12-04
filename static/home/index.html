@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>U掌柜 官方首页 买生鲜，1小时送达！优鲜美味，掌上专柜</title>
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="U掌柜，优鲜美味，掌上专柜 是一家生鲜食品综合电子商务.使用全新的生鲜2.0模式，改变以往生鲜电商用长半径商品如手机、服装等统仓配送的集中式库存，创造性地使用了分布式库存模式，能够1小时送达生鲜等即食性商品。">
+    <meta name="author" content="">    
+    <link rel="shortcut icon" href="favicon.ico">  
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Plugins CSS -->    
+    <!--link rel="stylesheet" href="css/font-awesome.css"-->
+    <link rel="stylesheet" href="css/flexslider.css">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Theme CSS -->  
+    <link id="theme-style" rel="stylesheet" href="css/styles.css">   
+
+    <!-- Javascript -->          
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="js/detectmobilebrowser.js"></script>      
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>   
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>     
+    <script type="text/javascript" src="js/jquery.inview.min.js"></script>
+    <script type="text/javascript" src="js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="js/jquery.scrollTo.min.js"></script>    
+    <script type="text/javascript" src="js/jquery.placeholder.js"></script>
+    <script type="text/javascript" src="js/jquery.flexslider-min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <!--[if !IE]>--> 
+    <script type="text/javascript" src="js/animations.js"></script> 
+    <!--<![endif]-->   </head> 
+
+<body data-spy="scroll">
+<script type="text/javascript">
+/**
+ * Determine the mobile operating system.
+ * This function either returns 'iOS', 'Android' or 'unknown'
+ *
+ * @returns {String}
+ */
+function getMobileOperatingSystem() {
+  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+  if( userAgent.match( /iPad/i ) || userAgent.match( /iPhone/i ) || userAgent.match( /iPod/i ) )
+  {
+    return 'iOS';
+  }
+  else if( userAgent.match( /Android/i ) )
+  {
+    return 'Android';
+  }
+  else
+  {
+    return 'unknown';
+  }
+}
+
+$(function () {
+	var r = getMobileOperatingSystem();
+	if (r=="Android" || r=="iOS"){
+		$("#pc-based").hide();
+	} else {
+		$("#mobile-based").hide();
+	}
+});
+</script>
+
+    <!-- ******HEADER****** --> 
+    <header id="top" class="header">  
+        <div class="container" >
+            <h1 class="logo pull-left">
+                    <img id="logo-image" class="logo-image" src="images/logo.png" alt="Logo">
+                    <span class="logo-title"><img height="25" src="images/logo2.png"></span>
+            </h1><!--//logo-->              
+            <nav id="main-nav" class="main-nav navbar-right"  role="navigation">
+                <div class="navbar-header">
+                </div><!--//navbar-header-->            
+                <div class="navbar-collapse collapse" id="navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item"><a href="./index.html"><p class="menuText">首页</p></a></li>
+                    </ul><!--//nav-->
+                </div><!--//navabr-collapse-->
+            </nav><!--//main-nav-->           
+        </div>
+    </header><!--//header-->
+    
+	<!-- ******PROMO - section #1  ****** -->
+    <section id="promo" class="promo section offset-header has-pattern">
+	<div class="container">
+
+            <div class="row" id="pc-based">
+                <div class="team col-md-3 col-sm-6 col-xs-12">
+                     <img width="256" class="img-responsive" src="images/qrcode_download.png" alt="" />
+                </div>
+                <div class="team col-md-3 col-sm-6 col-xs-12">
+                      <img width="256" class="img-responsive" src="images/qrcode_weixin.png" alt="" />
+
+                </div>
+            </div><!--//row-->
+
+            <div class="row" id="mobile-based">
+                <div class="team col-md-2 col-sm-6 col-xs-12"><a href="http://app.urfresh.cn/u">
+                     <img class="img-responsive" src="images/bt_download.png" alt="" /></a>　　　　
+                <!--a href="http://weixin.qq.com/r/nzhudqvEHvZhre8V922N">
+                      <img class="img-responsive" src="images/bt_weixin.png" alt="" /></a-->
+                </div>
+            </div><!--//row-->
+        </div><!--//container-->
+    </section><!--//promo-->
+
+    <!-- ******FEATURES****** -->
+    <section id="story" class="story section">
+         <div class="container">
+            <div class="row">
+                <div class="slider flexslider">
+                    <ul class="slides">                                    
+                        <li>
+                            <img src="images/post1.png"  />
+                        </li>
+                        <li>
+                            <img src="images/post2.png"  />
+                        </li>
+                        <li>
+                            <img src="images/post3.png"  />
+                        </li>
+                    </ul><!--//slides-->
+                </div><!--//flexslider-->   
+            </div><!--//row-->
+        </div><!--//container-->
+    </section><!--//features-->
+    
+    
+
+    <hr>
+    <!-- ******FOOTER****** -->
+    <footer class="footer">
+        <div class="container text-center">
+            <ul class="links list-inline">
+                <li><p>关于我们 |
+                <a href="mailto:web@urfresh.cn">联系我们</a> |
+                友情链接：
+                <a href="http://xiaoduotech.com/">晓多对话机器人</a></p></li>
+            </ul>
+            <ul class="links list-inline">
+                <li>浙江佳邻电子商务有限公司 &copy; 2015</li>
+            </ul>
+        </div>
+    </footer><!--//footer-->
+
+</body>
+</html> 
+

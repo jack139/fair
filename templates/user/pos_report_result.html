@@ -1,0 +1,45 @@
+$def with (name, str1, report, total, date)
+
+$var title: 门店POS
+$var css:
+$var js: 
+$var name: $'|'.join(str1) $name
+$var load: 
+$var menu: #shop4
+
+<div class="caption"><h2>销货统计<span>（$date）</span></h2></div>
+
+<div class="article_box">
+
+<div id="id_count">销货单数：共 $total[0] 笔</div>
+<div id="id_total">销货金额：共 $total[1] 元</div>
+
+<div>
+<input type="button" name="btn_back" value="返回" onclick="history.go(-1);" />
+</div>
+
+<table class="props_tb" id="qz-status">
+<thead>
+  <tr class="even">
+    <th>销货时间</th>
+    <th>销货单号</th>
+    <th>销货金额</th>
+    <th>付款金额</th>
+    <th>找零</th>
+  </tr>
+</thead>
+<tbody>
+
+$for u in report:
+  <tr>
+  <td>$u[4]</td>
+  <td>$u[0]</td>
+  <td>$u[1]</td>
+  <td>$u[2]</td>
+  <td>$u[3]</td>
+  </tr>
+</tbody>
+</table>
+
+
+</div>

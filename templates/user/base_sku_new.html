@@ -1,0 +1,66 @@
+$def with (name, str1)
+
+$var title: 平台管理
+$var css:
+$var name: $'|'.join(str1) $name
+$var js: /static/js/upload.js?v=1.010
+$var load: doFirst();
+$var menu: #plat3
+
+<div class="caption"><h2>新建SKU基础资料</h2></div>
+
+<form name="settings" method="post" action="/plat/base_sku_new">
+<input type="hidden" name="image" id="form_image" value=""/>
+
+<table class="props_tb">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+                <th>内容</th>
+                <th>说明</th>
+        </tr>
+</thead>
+<tbody>
+
+<tr><td>品名</td><td>
+	<input type="text" name="sku_name" value=""/>
+	</td><td>必填</td></tr>
+<tr><td>文描</td><td>
+	<textarea rows="3" name="abstract"></textarea>
+	</td><td></td></tr>
+<tr><td>保质期</td><td>
+	<input type="text" name="fresh_time" value="0" 
+	pattern="[0-9]+" title="必须是数字"/> 天
+	</td><td>0表示无限制</td></tr>
+<tr><td>原产地</td><td>
+	<input type="text" name="original" value="" />
+	</td><td></td></tr>
+
+<tr><td>图片</td><td>
+	<ul id="image-list"></ul>
+	</td><td>在页面下方上传图片</td></tr>
+
+<tr><td>状态</td><td>
+    <input type="radio" name="available" value="1" checked="checked" /> 可使用
+    <input type="radio" name="available" value="0" /> 停用
+    </td><td></td></tr>
+<tr><td>备注</td><td>
+	<textarea rows="3" name="note"></textarea>
+	</td><td>内部备注</td></tr>
+</tbody></table>
+<p><input type="submit" name="button" id="button" value="保存" />
+<input type="button" name="cancel" value="返回" onclick="history.go(-1);" /><p>
+</form>
+
+<div class="article_box">
+  <div id="image-main">
+    <form method="post" enctype="multipart/form-data"  action="">
+      <input type="file" name="images" id="images" />
+      <button type="submit" id="btn">上传图片</button>
+    </form> 
+    <div id="response"></div>
+  </div>
+</div>
+
+<br/>
+<div>&nbsp;</div>

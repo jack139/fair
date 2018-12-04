@@ -1,0 +1,44 @@
+$def with (name, str1, sku, base_sku, unit_type, shop, inventory_num)
+
+$var title: 门店POS
+$var css:
+$var name: $'|'.join(str1) $name
+$var js: 
+$var load: 
+$var menu: #shop2
+
+<div class="caption"><h2>报损</h2></div>
+<form name="return" method="post" action="/pos/damage_sku">
+<input type="hidden" name="product_id" id="id_product_id" value="$sku['product_id']"/>
+<input type="hidden" name="price" id="id_price" value="$inventory_num[1]"/>
+
+<table class="props_tb" id="qz-status">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+                <th>内容</th>
+                <th>说明</th>
+        </tr>
+</thead>
+<tbody>
+<tr><td>ID</td><td>$sku['product_id']</td><td></td></tr>
+<tr><td>品名</td><td id="id_name">$base_sku['name']</td><td></td></tr>
+<tr><td>原产地</td><td>$base_sku['original']</td><td></td></tr>
+
+<tr><td>销售单位</td><td>$unit_type[sku['unit']]</td><td></td></tr>
+<tr><td>定价方式</td><td>
+	$if sku["product_id"][2]==1: 整进整出
+	$elif sku["product_id"][2]==2: 散进散出
+	$else: 散进整出
+    </td><td></td></tr>
+<tr><td>报损数量</td><td><input type="input" name="weight" id="weight" 
+	onfocus="$$(this).select();" value="0" size="8"
+	pattern="[0-9]+[.]{0,1}[0-9]*" title="必须是数字"/></td>
+	<td>单位：$unit_type[sku['unit']]</td></tr>
+</tbody></table>
+<p><input type="submit" name="submit" value="提交报损" 
+   onclick="if (confirm('确定报损吗？')) return true; else return false;"/>
+<input type="button" name="cancel" value="返回" onclick="location.href='/pos/inventory';" /><p>
+</form>
+
+<br/>

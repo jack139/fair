@@ -1,0 +1,27 @@
+$def with (name, str1)
+
+$var title: 仓储管理
+$var css:
+$var js: 
+$var name: $'|'.join(str1) $name
+$var load: 
+$var menu: #stoc2
+
+<div class="caption"><h2>库存管理</h2></div>
+
+<form name="inventory" method="post" action="/stock/inventory">
+<div class="article_box">
+<h3>查询SKU</h3>
+<p>查询条件：
+<input type="radio" name="cat" value="product_id" checked="checked"/> SKU ID
+<input type="radio" name="cat" value="name" /> 品名
+<input type="radio" name="cat" value="original" /> 产地
+<input type="radio" name="cat" value="shop" /> 站点
+</p>
+<p><input type="text" value="" name="content"/></p>
+</div>
+
+<p><input type="submit" name="button" id="button" value="查询"/><p>
+</form>
+
+<br/>

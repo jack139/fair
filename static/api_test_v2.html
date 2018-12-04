@@ -1,0 +1,329 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+<meta charset="UTF-8">
+<title>api test</title>
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/md5.min.js"></script>
+</head>
+
+<body>
+<script type="text/javascript">
+function generate_sign(target, list){
+	var raw = "";
+	$.each(list, function(i, item){
+		raw += $(item).val();
+	});
+	console.log(raw);
+	$(target).val(md5(raw).toUpperCase());
+}
+</script>
+
+<div>public_key: <input id="public_key" size="50" value="DHTTG9D14B3413C65991278F09A03896"/></div>
+<div>private_key: <input id="private_key" size="50" value=""/></div>
+<br/>
+
+<h2>首次握⼿ first_hand</h2>
+<form name="1" method="post" action="/app/v2/first_hand">
+<div>type: <input id="type_1" name="type" value="IOS"/></div>
+<div>secret: <input id="secret_1" name="secret" value="12345"/></div>
+<div>sign: <input id="sign_1" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_1', ['#public_key','#type_1','#secret_1'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>连接导向 get_host</h2>
+<form name="2" method="post" action="/app/v2/get_host">
+<div>app_id: <input id="app_id_2" name="app_id" value=""/></div>
+<div>secret: <input id="secret_2" name="secret" value="12345"/></div>
+<div>sign: <input id="sign_2" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_2', ['#private_key','#app_id_2','#secret_2'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>查询门店 locate_shop</h2>
+<form name="3" method="post" action="/app/v2/locate_shop">
+<div>app_id: <input id="app_id_3" name="app_id" value=""/></div>
+<div>type: <input id="type_3" name="type" value="NAME"/></div>
+<div>data: <input id="data_3" name="data" value="高斯路"/></div>
+<div>gps: <input id="gps_3" name="gps" value=""/></div>
+<div>sign: <input id="sign_3" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_3', ['#private_key','#app_id_3','#type_3','#data_3','#gps_3'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>获取全局参数 get_settings</h2>
+<form name="4" method="post" action="/app/v2/get_settings">
+<div>app_id: <input id="app_id_4" name="app_id" value=""/></div>
+<div>secret: <input id="secret_4" name="secret" value="12345"/></div>
+<div>sign: <input id="sign_4" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_4', ['#private_key','#app_id_4','#secret_4'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>查询商品 sku_list</h2>
+<form name="5" method="post" action="/app/v2/sku_list">
+<div>app_id: <input id="app_id_5" name="app_id" value=""/></div>
+<div>shop_id: <input id="shop_id_5" name="shop_id" value=""/></div>
+<div>category: <input id="category_5" name="category" value="c001"/></div>
+<div>page_size: <input id="page_size_5" name="page_size" value="10"/></div>
+<div>page_index: <input id="page_index_5" name="page_index" value="0"/></div>
+<div>sign: <input id="sign_5" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_5', ['#private_key','#app_id_5','#shop_id_5','#category_5','#page_size_5','#page_index_5'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>商品详情 sku_detail</h2>
+<form name="6" method="post" action="/app/v2/sku_detail">
+<div>app_id: <input id="app_id_6" name="app_id" value=""/></div>
+<div>shop_id: <input id="shop_id_6" name="shop_id" value=""/></div>
+<div>product_id: <input id="product_id_6" name="product_id" value=""/></div>
+<div>sign: <input id="sign_6" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_6', ['#private_key','#app_id_6','#shop_id_6','#product_id_6'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>用户登录注册 user_login</h2>
+<form name="7" method="post" action="/app/v2/user_login">
+<div>app_id: <input id="app_id_7" name="app_id" value=""/></div>
+<div>number: <input id="number_7" name="number" value=""/></div>
+<div>secret: <input id="secret_7" name="secret" value="12345"/></div>
+<div>sign: <input id="sign_7" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_7', ['#private_key','#app_id_7','#number_7','#secret_7'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>核对验证码 user_check_rand</h2>
+<form name="8" method="post" action="/app/v2/user_check_rand">
+<div>app_id: <input id="app_id_8" name="app_id" value=""/></div>
+<div>session: <input id="session_8" name="session" size="50" value=""/></div>
+<div>rand: <input id="rand_8" name="rand" value=""/></div>
+<div>invitation: <input id="invitation_8" name="invitation" value=""/></div>
+<div>sign: <input id="sign_8" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_8', ['#private_key','#app_id_8','#session_8','#rand_8','#invitation_8'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>用户注销登录 user_logout</h2>
+<form name="9" method="post" action="/app/v2/user_logout">
+<div>app_id: <input id="app_id_9" name="app_id" value=""/></div>
+<div>session: <input id="session_9" name="session" size="50" value=""/></div>
+<div>secret: <input id="secret_9" name="secret" value="12345"/></div>
+<div>sign: <input id="sign_9" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_9', ['#private_key','#app_id_9','#session_9','#secret_9'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>获取所有收货地址 addr_list</h2>
+<form name="10" method="post" action="/app/v2/addr_list">
+<div>app_id: <input id="app_id_10" name="app_id" value=""/></div>
+<div>session: <input id="session_10" name="session" size="50" value=""/></div>
+<div>secret: <input id="secret_10" name="secret" value="12345"/></div>
+<div>sign: <input id="sign_10" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_10', ['#private_key','#app_id_10','#session_10','#secret_10'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+
+<h2>新增收货地址 addr_add</h2>
+<form name="11" method="post" action="/app/v2/addr_add">
+<div>app_id: <input id="app_id_11" name="app_id" value=""/></div>
+<div>session: <input id="session_11" name="session" size="50" value=""/></div>
+<div>name: <input id="name_11" name="name" value="王二"/></div>
+<div>tel: <input id="tel_11" name="tel" value="1380000000"/></div>
+<div>addr: <input id="addr_11" name="addr" value="高斯路1122弄"/></div>
+<div>sign: <input id="sign_11" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_11', ['#private_key','#app_id_11','#session_11','#name_11','#tel_11','#addr_11'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>修改收货地址 addr_modify</h2>
+<form name="11a" method="post" action="/app/v2/addr_modify">
+<div>app_id: <input id="app_id_11a" name="app_id" value=""/></div>
+<div>session: <input id="session_11a" name="session" size="50" value=""/></div>
+<div>addr_id: <input id="addr_id_11a" name="addr_id" value=""/></div>
+<div>name: <input id="name_11a" name="name" value="王二"/></div>
+<div>tel: <input id="tel_11a" name="tel" value="1380000000"/></div>
+<div>addr: <input id="addr_11a" name="addr" value="高斯路1122弄"/></div>
+<div>sign: <input id="sign_11a" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_11a', ['#private_key','#app_id_11a','#session_11a','#addr_id_11a',
+		'#name_11a','#tel_11a','#addr_11a'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>删除收货地址 addr_remove</h2>
+<form name="11b" method="post" action="/app/v2/addr_remove">
+<div>app_id: <input id="app_id_11b" name="app_id" value=""/></div>
+<div>session: <input id="session_11b" name="session" size="50" value=""/></div>
+<div>addr_id: <input id="addr_id_11b" name="addr_id" value=""/></div>
+<div>sign: <input id="sign_11b" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_11b', ['#private_key','#app_id_11b','#session_11b','#addr_id_11b'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>获取优惠券清单 coupon_list</h2>
+<form name="12" method="post" action="/app/v2/coupon_list">
+<div>app_id: <input id="app_id_12" name="app_id" value=""/></div>
+<div>session: <input id="session_12" name="session" size="50" value=""/></div>
+<div>secret: <input id="secret_12" name="secret" value="12345"/></div>
+<div>sign: <input id="sign_12" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_12', ['#private_key','#app_id_12','#session_12','#secret_12'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>获取优惠券清单 coupon_list v3</h2>
+<form name="12a" method="post" action="/app/v3/coupon_list">
+<div>app_id: <input id="app_id_12a" name="app_id" value=""/></div>
+<div>session: <input id="session_12a" name="session" size="50" value=""/></div>
+<div>secret: <input id="secret_12a" name="secret" value="12345"/></div>
+<div>sign: <input id="sign_12a" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_12a', ['#private_key','#app_id_12a','#session_12a','#secret_12a'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>获取优惠券清单 coupon_list v4</h2>
+<form name="12b" method="post" action="/app/v4/coupon_list">
+<div>app_id: <input id="app_id_12b" name="app_id" value=""/></div>
+<div>session: <input id="session_12b" name="session" size="50" value=""/></div>
+<div>secret: <input id="secret_12b" name="secret" value="12345"/></div>
+<div>sign: <input id="sign_12b" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_12b', ['#private_key','#app_id_12b','#session_12b','#secret_12b'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>提交购物车结算 order_checkout</h2>
+<form name="13" method="post" action="/app/v2/order_checkout">
+<div>app_id: <input id="app_id_13" name="app_id" value=""/></div>
+<div>session: <input id="session_13" name="session" size="50" value=""/></div>
+<div>order_id: <input id="order_id_13" name="order_id" value=""/></div>
+<div>shop_id: <input id="shop_id_13" size="50" name="shop_id" value=""/></div>
+<div>addr_id: <input id="addr_id_13" name="addr_id" value="kcea"/></div>
+<div>coupon_id: <input id="coupon_id_13" name="coupon_id" value="fitf"/></div>
+<div>cart: <input id="cart_13" name="cart" size="100" value='[{"product_id":"k000008","num":5}]'/></div>
+<div>sign: <input id="sign_13" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_13', ['#private_key','#app_id_13','#session_13','#order_id_13','#shop_id_13',
+		'#addr_id_13','#coupon_id_13','#cart_13'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+
+<h2>支付完成 order_pay</h2>
+<form name="14" method="post" action="/app/v2/order_pay">
+<div>app_id: <input id="app_id_14" name="app_id" value=""/></div>
+<div>session: <input id="session_14" name="session" size="50" value=""/></div>
+<div>order_id: <input id="order_id_14" name="order_id" value=""/></div>
+<div>pay_type: <input id="pay_type_14" size="50" name="pay_type" value="ALIPAY"/></div>
+<div>data: <input id="data_14" name="data" value=""/></div>
+<div>sign: <input id="sign_14" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_14', ['#private_key','#app_id_14','#session_14','#order_id_14',
+		'#pay_type_14','#data_14'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>订单列表 order_list</h2>
+<form name="15" method="post" action="/app/v2/order_list">
+<div>app_id: <input id="app_id_15" name="app_id" value=""/></div>
+<div>session: <input id="session_15" name="session" size="50" value=""/></div>
+<div>query: <input id="query_15" name="query" value="ALL"/></div>
+<div>page_size: <input id="page_size_15" name="page_size" value="10"/></div>
+<div>page_index: <input id="page_index_15" name="page_index" value="0"/></div>
+<div>sign: <input id="sign_15" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_15', ['#private_key','#app_id_15','#session_15','#query_15',
+		'#page_size_15','#page_index_15'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+
+<h2>订单详情 order_detail</h2>
+<form name="16" method="post" action="/app/v2/order_detail">
+<div>app_id: <input id="app_id_16" name="app_id" value=""/></div>
+<div>session: <input id="session_16" name="session" size="50" value=""/></div>
+<div>order_id: <input id="order_id_16" name="order_id" value=""/></div>
+<div>sign: <input id="sign_16" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_16', ['#private_key','#app_id_16','#session_16','#order_id_16'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>取消订单 order_cancel</h2>
+<form name="17" method="post" action="/app/v2/order_cancel">
+<div>app_id: <input id="app_id_17" name="app_id" value=""/></div>
+<div>session: <input id="session_17" name="session" size="50" value=""/></div>
+<div>order_id: <input id="order_id_17" name="order_id" value=""/></div>
+<div>sign: <input id="sign_17" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_17', ['#private_key','#app_id_17','#session_17','#order_id_17'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>阿里云异步通知 alipay_notify</h2>
+<form name="18" method="post" action="/app/v2/alipay_notify">
+<div>out_trade_no: <input name="out_trade_no" value="n000037"/></div>
+<div>trade_status: <input name="trade_status" value="TRADE_SUCCESS"/></div>
+<div>refund_status: <input name="refund_status" value="REFUND_SUCCESS"/></div>
+<div>trade_no: <input name="trade_no" value="2015072600001000290059171016"/></div>
+<div>total_fee: <input name="total_fee" value=""/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>微信支付 wxpay</h2>
+<form name="19" method="post" action="/app/v2/wxpay">
+<div>app_id: <input id="app_id_19" name="app_id" value=""/></div>
+<div>session: <input id="session_19" name="session" size="50" value=""/></div>
+<div>order_id: <input id="order_id_19" name="order_id" value=""/></div>
+<div>total: <input id="total_19" name="total" value="1"/></div>
+<div>sign: <input id="sign_19" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_19', ['#private_key','#app_id_19','#session_19',
+		'#order_id_19','#total_19'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+</body>
+
+<h2>订单打分 order_star</h2>
+<form name="20" method="post" action="/app/v2/order_star">
+<div>app_id: <input id="app_id_20" name="app_id" value=""/></div>
+<div>session: <input id="session_20" name="session" size="50" value=""/></div>
+<div>order_id: <input id="order_id_20" name="order_id" value=""/></div>
+<div>star: <input id="star_20" name="star" value=""/></div>
+<div>sign: <input id="sign_20" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_20', ['#private_key','#app_id_20','#session_20',
+		'#order_id_20', '#star_20'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>获取帐户余额 get_credit</h2>
+<form name="21" method="post" action="/app/v2/get_credit">
+<div>app_id: <input id="app_id_21" name="app_id" value=""/></div>
+<div>session: <input id="session_21" name="session" size="50" value=""/></div>
+<div>secret: <input id="secret_21" name="secret" value="12345"/></div>
+<div>sign: <input id="sign_21" name="sign" size="50" value=""/><input type="button" value="生成签名"
+	onclick="generate_sign('#sign_21', ['#private_key','#app_id_21','#session_21','#secret_21'])"></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+</html>

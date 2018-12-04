@@ -1,0 +1,49 @@
+$def with (name, str1, skus, region_name)
+
+$var title: 平台管理
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #plat6
+
+<div class="caption"><h2>拼团活动管理</h2></div>
+
+<p><a class="abtn" href="/plat/pt_store_new">添加新活动</a></p>
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>ID</th>
+		<th>区域</th>
+		<th width="30%">活动标题</th>
+		<th>上架</th>
+		<th>售罄</th>
+		<th>到期时间</th>
+		<th width="10%">活动统计</th>
+		<th width="15%">备注</th>
+	</tr>
+</thead>
+<tbody>
+
+$for u in skus:
+  <tr><td><a href="/plat/pt_store_edit?sku=$u['_id']">$u['tuan_id']</a></td>
+  <td>
+	$for i in region_name.keys(): 
+		$if i in u['region_id']:
+			$region_name[i],
+  </td>
+  <td>$u['title']</td>
+  <td>
+	$for i in region_name.keys(): 	
+		$if i in u['online']:
+			$region_name[i],
+  </td>
+  <td>$('是' if u['sale_out']==1 else '')</td>
+  <td>$u['expire_time']</td>
+  <td>$u['pt_orders']</td>
+  <td>$u.get('note')</td>
+  </tr>
+</tbody>
+</table>
+活动统计：(成团数量，正在开团数量，拼团失败数量)

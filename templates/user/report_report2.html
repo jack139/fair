@@ -1,0 +1,52 @@
+$def with (name, str1, shops)
+
+$var title: 报表
+$var css:
+$var js: /static/js/time.js /static/My97DatePicker/WdatePicker.js
+$var name: $'|'.join(str1) $name
+$var load: InitInit();
+$var menu: #rept2
+
+<script type="text/javascript">
+function InitInit(){
+	var date =  new Time();
+	var m_dtCalendarDate = date.getStringTime().split(" ")[0];;
+
+	WdatePicker({
+		minDate:'2014-01-01 00:00:00',
+		maxDate:'2048-12-31 23:59:59',
+		eCont:'div1',
+		onpicked:function(dp){
+			m_dtCalendarDate = 
+			$$('#dtCalendarDate').val(dp.cal.getDateStr());
+		},
+		lang: 'zh-cn',
+		startDate:m_dtCalendarDate
+	});	
+	
+}
+
+function goReport(){
+	window.location.href='/report/report2?start_date='+$$('#dtCalendarDate').val()+'&shop='+$$('#shop_select').val();
+}
+
+
+</script>
+
+<div class="caption"><h2>门店销售汇总</h2></div>
+
+<div class="article_box">
+<div><p>查询日期：<input class="formtextinput3" type="text" value="" id="dtCalendarDate" readonly="readonly"/></p>
+	<div id="div1" class="widthpercent100"></div></div>
+<!--div><input type="radio" name="cate" id="cate1"/> 按销货单 &nbsp;&nbsp;&nbsp;
+<input type="radio" name="cate" id="cate2" checked="checked"/> 按商品</div-->
+<div>门店：<select id="shop_select" name="shop_select">
+	<option value='__ALL__' checked="checked">全部</option>
+$for i in shops:
+	<option value="$i['_id']" checked="checked">$i['name']</option>
+</select></div>
+<p><input class="formbutton" type="button" name="button" id="button" value="查询" onclick="goReport();" /></p>
+
+</div>
+
+<br/>

@@ -1,0 +1,74 @@
+$def with (name, str1, date, audit, sku, sum, only_view=True)
+
+$var title: 门店POS
+$var css:
+$var js: /static/js/pos_audit_sku.js?v=1.001
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #shop3
+
+<div class="caption"><h2>盘点结果(账目)</h2></div>
+
+<div class="article_box">
+
+<div>盘点账期：$date[0]－$date[1]</div>
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>ID</th>
+		<th width="30%">品名</th>
+		<th>单位</th>
+		<th> </th>
+		<th>期初</th>
+		<th>进货</th>
+		<th>销售</th>
+		<th>期末</th>
+		<th>盘点</th>
+		<th>损耗</th>
+	</tr>
+</thead>
+<tbody>
+
+$for u in audit.keys():
+	<tr>
+	<td  rowspan="2">$u</td>
+	<td  rowspan="2">$sku[audit[u]['sku']][0]</td>
+	<td  rowspan="2">$sku[audit[u]['sku']][1]</td>
+	<td>价/额</td>
+	<td>$audit[u]['begin'][0]元</td>
+	<td>$audit[u]['receive'][0]元</td>
+	<td>$audit[u]['sale'][0]元</td>
+	<td>$audit[u]['end'][0]元</td>
+	<td>－</td>
+	<td>$audit[u]['loss'][0]元</td>
+	</tr>
+	<tr>
+	<td class="bg_gray">数量</td>
+	<td class="bg_gray">$audit[u]['begin'][1]</td>
+	<td class="bg_gray">$audit[u]['receive'][1]</td>
+	<td class="bg_gray">$audit[u]['sale'][1]</td>
+	<td class="bg_gray">$audit[u]['end'][1]</td>
+	<td class="bg_gray">$audit[u]['audit'][1]</td>
+	<td class="bg_gray">$audit[u]['loss'][1]</td>
+	</tr>
+</tbody>
+</table>
+
+<div>销售收入： $sum[0]</div>
+<div>销售成本： $sum[1]</div>
+<!--div>总毛利额： $sum[2]</div-->
+<div>总耗损额： $sum[3]</div>
+
+</div>
+
+$if not only_view:
+	<form name="audit_commit"  method="post" action="/pos/audit_commit">
+	<div> 
+	    <input type="submit" name="submit" value="确认盘点结果／结束账期" onclick="if (confirm('确定结束账期吗？')) return true; else return false;"/>
+	    <input type="button" name="cancel" value="返回" onclick="history.go(-1);" />
+	</div>
+	</form>
+$else:
+	<input type="button" name="cancel" value="返回" onclick="history.go(-1);" />
+

@@ -1,0 +1,42 @@
+$def with (name, str1, settings)
+
+$var title: 系统设置
+$var css:
+$var js:
+$var name: $str1 $name
+    
+<div class="caption"><h2>系统设置</h2></div>
+
+<form name="settings" method="post" action="/admin/sys_setting">  
+
+<div class="article_box">
+<p> 固定包装sku计数：
+<input type="text" name="pk_count" value="$settings['pk_count']" pattern="[0-9]+" title="必须是数字"/> 
+</p>
+
+<p> 称重定价sku计数：
+<input type="text" name="wt_count" value="$settings['wt_count']" pattern="[0-9]+" title="必须是数字"/> 
+</p>
+
+<p> 销货单计数：
+<input type="text" name="sa_count" value="$settings['sa_count']" pattern="[0-9]+" title="必须是数字"/> 
+</p>
+
+<!--p> <b>拦截有价值退票：</b>
+<input type="radio" name="return_check" value="1"  
+  $$if settings['return_check']==1: 
+    checked 
+  /> 拦截
+<input type="radio" name="return_check" value="0"  
+  $$if settings['return_check']!=1: 
+    checked 
+  /> 放行
+</p-->
+
+</div>
+
+<p><input type="submit" name="button" id="button" value="保存" />
+<input type="button" name="cancel" value="返回" onclick="history.go(-1);" /><p>
+
+</form>
+

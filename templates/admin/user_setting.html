@@ -1,0 +1,149 @@
+$def with (name, str1, settings, reg_time, level, base_shop)
+
+$var title: 用户设置
+$var css:
+$var js:
+$var name: $str1 $name
+
+<div class="caption"><h2>用户设置</h2></div>
+
+<form name="settings" method="post" action="/admin/user_setting">
+<input type="hidden" name="uid" value="$settings['_id']" />
+
+<table class="props_tb">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+                <th>内容</th>
+        </tr>
+</thead>
+<tbody>
+
+<tr><td>用户名</td><td class="t_l">$settings['uname']</td></tr>
+<tr><td>全名</td><td class="t_l"><input type="text" name="full_name" value="$settings['full_name']"/>(名称|电话)</td></tr>
+<tr><td>密码</td><td class="t_l"><input type="password" name="passwd" value=""/></td></tr>
+<tr><td>注册时间</td><td class="t_l">$reg_time</td></tr>
+<tr><td rowspan="7">用户权限</td><td class="t_l">
+	<input type="checkbox" name="priv" value="PLAT_SKU_STORE"
+	$if 'PLAT_SKU_STORE' in level:
+		checked="checked"
+	/> SKU管理
+	<input type="checkbox" name="priv" value="PLAT_BASE_SKU"
+	$if 'PLAT_BASE_SKU' in level:
+		checked="checked"
+	/> SKU基础资料
+	<input type="checkbox" name="priv" value="PLAT_PT_STORE"
+	$if 'PLAT_PT_STORE' in level:
+		checked="checked"
+	/> 拼团活动管理
+	<input type="checkbox" name="priv" value="PLAT_BASE_SHOP"
+	$if 'PLAT_BASE_SHOP' in level:
+		checked="checked"
+	/> 站点基础资料
+	<input type="checkbox" name="priv" value="APP_PUSH"
+	$if 'APP_PUSH' in level:
+		checked="checked"
+	/> App消息推送
+</td></tr>
+<tr><td class="t_l">
+	<input type="checkbox" name="priv" value="STOCK_INVENTORY"
+	$if 'STOCK_INVENTORY' in level:
+		checked="checked"
+	/> 库存管理
+	<input type="checkbox" name="priv" value="STOCK_ORDER"
+	$if 'STOCK_ORDER' in level:
+		checked="checked"
+	/> 工单管理
+</td></tr>
+<tr><td class="t_l">
+	<input type="checkbox" name="priv" value="POS_POS"
+	$if 'POS_POS' in level:
+		checked="checked"
+	/> 销货
+	<input type="checkbox" name="priv" value="POS_INVENTORY"
+	$if 'POS_INVENTORY' in level:
+		checked="checked"
+	/> 店内库存
+	<input type="checkbox" name="priv" value="ONLINE_MAN"
+	$if 'ONLINE_MAN' in level:
+		checked="checked"
+	/> 线上订单
+	<input type="checkbox" name="priv" value="BATCH_JOB"
+	$if 'BATCH_JOB' in level:
+		checked="checked"
+	/> 批量处理订单
+	<input type="checkbox" name="priv" value="POS_AUDIT"
+	$if 'POS_AUDIT' in level:
+		checked="checked"
+	/> 盘点
+	<input type="checkbox" name="priv" value="POS_REPORT"
+	$if 'POS_REPORT' in level:
+		checked="checked"
+	/> 销货统计
+	<input type="checkbox" name="priv" value="POS_PRINT_LABEL"
+	$if 'POS_PRINT_LABEL' in level:
+		checked="checked"
+	/> 打印标签
+	<input type="checkbox" name="priv" value="POS_REPORT_USER"
+	$if 'POS_REPORT_USER' in level:
+		checked="checked"
+	/> 打印班组统计
+</td></tr>
+<tr><td class="t_l">
+	<input type="checkbox" name="priv" value="CRM"
+	$if 'CRM' in level:
+		checked="checked"
+	/> 订单查询
+	<input type="checkbox" name="priv" value="REPORT_VOICE"
+	$if 'REPORT_VOICE' in level:
+		checked="checked"
+	/> 用户反馈
+</td></tr>
+<tr><td class="t_l">
+	<input type="checkbox" name="priv" value="REPORT_REPORT1"
+	$if 'REPORT_REPORT1' in level:
+		checked="checked"
+	/> 线上订单清单
+	<input type="checkbox" name="priv" value="REPORT_REPORT2"
+	$if 'REPORT_REPORT2' in level:
+		checked="checked"
+	/> 门店销售汇总
+	<input type="checkbox" name="priv" value="BI_REPORT"
+	$if 'BI_REPORT' in level:
+		checked="checked"
+	/> BI报表
+	<input type="checkbox" name="priv" value="REPORT_QUERY"
+	$if 'REPORT_QUERY' in level:
+		checked="checked"
+	/> 手工查询
+</td></tr>
+<tr><td class="t_l"><input type="checkbox" name="priv" value="DELVERY_ORDER" 
+	$if 'DELVERY_ORDER' in level:
+		checked="checked"
+	/> 快递员UI
+</td></tr>
+<tr><td class="t_l">
+ 门店（设置门店权限和快递员需设置此项）：
+    <select name="shop" id="shop">
+    <option value="">--请选择--</option>
+    $for k in base_shop:
+	<option value="$k[0]"
+	    $if settings['shop']==k[0]:
+	    	selected="selected"
+	>$k[1]（$k[2]）</option>
+    </select>
+</td></tr>
+
+<tr><td rowspan="2">用户状态</td><td class="t_l"><input type="radio" name="login" value="1" 
+      $if settings['login']==1: checked
+    /> 正常 <input type="radio" name="login" value="0"
+      $if settings['login']==0: checked
+    /> 停用</td></tr>
+
+</tbody>
+</table>
+
+<p><input type="submit" name="button" id="button" value="保存" />
+<input type="button" name="cancel" value="返回" onclick="history.go(-1);" /><p>
+
+</form>

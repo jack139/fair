@@ -1,0 +1,85 @@
+$def with (name, str1, sku, base_sku, unit_type, base_shop)
+
+$var title: 仓储管理
+$var css:
+$var name: $'|'.join(str1) $name
+$var js: /static/js/stock_inventory.js?v=1.018
+$var load: first();
+$var menu: #stoc2
+
+<script type="text/javascript">
+function first()
+{
+	sku = "$sku['_id']";
+	$for k in base_shop:
+		shop_list["$k[0]"]="$k[1]（$k[2]）";
+	select_whouse=$$("<select name=\"select_whouse\" id=\"select_whouse\">"
+		+"<option value=\"\">--请选择--</option>"
+		$for k in base_shop:
+			$if k[2]=="仓库":
+				+"<option value=\"$k[0]\">$k[1]（$k[2]）</option>"
+		+"</select>")
+	checkout();
+}
+</script>
+
+<div class="caption"><h2>库存管理</h2></div>
+
+<!--form name="new_sku" id="new_sku" method="post" action="/stock/inventory_edit"-->
+<!--input type="hidden" name="sku" id="sku" value="$sku['_id']"/-->
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>项目</th>
+		<th colspan="2">内容</th>
+		<th>说明</th>
+	</tr>
+</thead>
+<tbody>
+<tr><td>ID</td><td id="product_id" colspan="2">$sku['product_id']</td><td></td></tr>
+<tr><td>品名</td><td colspan="2">$base_sku['name']</td><td></td></tr>
+<tr><td>原产地</td><td colspan="2">$base_sku['original']</td><td></td></tr>
+
+<tr><td>销售单位</td><td colspan="2">$unit_type[sku['unit']]</td><td></td></tr>
+<tr><td>参考成本</td><td colspan="2">$sku['ref_cost'] 元</td><td></td></tr>
+<tr><td>参考售价</td><td colspan="2">$sku['ref_price'] 元</td><td></td></tr>
+<tr><td>定价方式</td><td colspan="2">
+	$if sku["product_id"][2]==1: 整进整出
+	$elif sku["product_id"][2]==2: 散进散出
+	$else: 散进整出
+    </td><td></td></tr>
+
+<tr><td id="invent_col" rowspan="2">库存</td>
+<td colspan="2"><select name="shop_list" id="shop_list">
+<option value="" selected="selected">--请选择--</option>
+$for k in base_shop:
+	$if k[2] not in ("仓库", "分拨中心"):
+		<option value="$k[0]">$k[1]（$k[2]）</option>
+</select>
+<a href="#" class="abtn" onclick="return add_shop();">增加站点</a></td><td></td></tr>
+<tr id="invent"><td>库存合计</td><td><div id="total_num">0</div></td><td></td></tr>
+
+<tr><td>状态</td><td colspan="2">
+	$if sku['available']==1: 在使用
+	$else: 停用
+    </td><td></td></tr>
+<tr><td>备注</td><td colspan="2">
+	<textarea rows="3" name="note" readonly="readonly">$sku['note']</textarea>
+	</td><td></td></tr>
+</tbody></table>
+<p><!--input type="button" name="button" id="button" value="保存" onclick="check_all();"/-->
+<!--input type="button" name="refresh" value="刷新" onclick="location.href='/stock/inventory_edit?sku=$sku['_id']';" />
+<input type="button" name="cancel" value="返回" onclick="history.go(-1);" /-->
+<a class="abtn" href="/stock/inventory_edit?sku=$sku['_id']">刷新</a>
+<a class="abtn" href="javascript:history.go(-1);">返回</a>
+<p>
+<!--/form-->
+
+<div class="article_box">
+  <div>操作日志：</div>
+  <textarea rows="8" cols="80" id="history">
+  </textarea>
+</div>
+
+<br/>

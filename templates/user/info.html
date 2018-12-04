@@ -1,0 +1,22 @@
+$def with (info, goto="javascript:history.go(-1);", text2="返回", more=[])
+
+$var title: 信息提示
+$var css:
+$var js:
+$var name: 
+$var load:
+$var menu: #home
+
+<div class="caption"><h2>提示信息</h2></div>
+<div class="mod_desc">
+        <p>$info</p>
+</div>
+$if len(more)>0:
+  <div class="article_box">
+  $for i in more:
+      <p>$i</p>
+  </div>
+
+<div class="article_box">
+<p><a href="$goto" class="btn">$text2</a></p>
+</div>

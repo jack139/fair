@@ -1,0 +1,74 @@
+$def with (name, str1, base_shop)
+
+$var title: 添加用户
+$var css:
+$var js:
+$var name: $str1 $name
+
+<div class="caption"><h2>添加用户</h2></div>
+
+<form name="settings" method="post" action="/admin/user_add">
+
+<table class="props_tb">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+                <th>内容</th>
+        </tr>
+</thead>
+<tbody>
+<tr><td>用户名</td><td class="t_l"><input type="text" name="uname" value=""/></td></tr>
+<tr><td>密码</td><td class="t_l"><input type="password" name="passwd" value=""/></td></tr>
+<tr><td>全名</td><td class="t_l"><input type="text" name="full_name" value=""/>(名称|电话)</td></tr>
+<tr><td rowspan="7">用户权限</td><td class="t_l">
+	<input type="checkbox" name="priv" value="PLAT_SKU_STORE"/> SKU管理
+	<input type="checkbox" name="priv" value="PLAT_BASE_SKU"/> SKU基础资料
+	<input type="checkbox" name="priv" value="PLAT_PT_STORE"/> 拼团活动管理
+	<input type="checkbox" name="priv" value="PLAT_BASE_SHOP"/> 站点基础资料
+	<input type="checkbox" name="priv" value="APP_PUSH"/> App消息推送
+</td></tr>
+<tr><td class="t_l">
+	<input type="checkbox" name="priv" value="STOCK_INVENTORY"/> 库存管理
+	<input type="checkbox" name="priv" value="STOCK_ORDER"/> 工单管理
+</td></tr>
+<tr><td class="t_l">
+	<input type="checkbox" name="priv" value="POS_POS"/> 销货
+	<input type="checkbox" name="priv" value="POS_INVENTORY"/> 店内库存
+	<input type="checkbox" name="priv" value="ONLINE_MAN"/> 线上订单
+	<input type="checkbox" name="priv" value="BATCH_JOB"/> 批量处理订单
+	<input type="checkbox" name="priv" value="POS_AUDIT"/> 盘点
+	<input type="checkbox" name="priv" value="POS_REPORT"/> 销货统计
+	<input type="checkbox" name="priv" value="POS_PRINT_LABEL"/> 打印标签
+	<input type="checkbox" name="priv" value="POS_REPORT_USER"/> 打印班组统计
+</td></tr>
+<tr><td class="t_l">
+	<input type="checkbox" name="priv" value="CRM"/> 订单查询
+	<input type="checkbox" name="priv" value="REPORT_VOICE"/> 用户反馈
+</td></tr>
+<tr><td class="t_l">
+	<input type="checkbox" name="priv" value="REPORT_REPORT1"/> 线上订单清单
+	<input type="checkbox" name="priv" value="REPORT_REPORT2"/> 门店销售汇总
+	<input type="checkbox" name="priv" value="BI_REPORT"/> BI报表
+	<input type="checkbox" name="priv" value="REPORT_QUERY"/> 手工查询
+</td></tr>
+<tr><td class="t_l"><input type="checkbox" name="priv" value="DELVERY_ORDER" /> 快递员UI
+</td></tr>
+<tr><td class="t_l">
+ 门店（设置门店权限和快递员需设置此项）：
+<select name="shop" id="shop">
+<option value="" selected="selected">--请选择--</option>
+$for k in base_shop:
+	<option value="$k[0]">$k[1]（$k[2]）</option>
+</select>
+</td></tr>
+<tr><td>用户状态</td><td class="t_l"><input type="radio" name="login" value="1" checked /> 正常
+	<input type="radio" name="login" value="0" /> 停用</td></tr>
+
+</tbody>
+</table>
+
+<p><input type="submit" name="button" id="button" value="保存" />
+<input type="button" name="cancel" value="返回" onclick="history.go(-1);" /><p>
+
+
+</form>

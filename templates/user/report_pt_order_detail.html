@@ -1,0 +1,45 @@
+$def with (name, str1, r, region_name, title)
+
+$var title: 报表
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #rept4
+
+<div class="caption"><h2>拼团活动详情</h2></div>
+
+<table class="props_tb">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+        	<th>内容</th>
+        </tr>
+</thead>
+<tbody>
+  <tr><td >ID</td><td >$r['pt_order_id']</td></tr>
+  <tr><td >区域</td><td >
+	$for i in region_name.keys(): 
+		$if i in r['region_id']:
+			$region_name[i],
+  </td></tr>
+  <tr><td >名称</td><td >$title</td></tr>
+  <tr><td >状态</td><td >$r['status']</td></tr>
+  <tr><td >类型</td><td >$r['type']</td></tr>
+  <tr><td >过期时间</td><td >$r['expire_time']</td></tr>
+  <tr><td >团长</td><td >$r['leader']</td></tr>
+  <tr><td >成员/订单</td><td >
+  	$for m in r['member']:
+  		<div>$m['openid'] - <a href="/view_event?todo=$m.get('order_id','')" target="_blank">$m.get('order_id','n/a')</a></div>
+  </td></tr>
+  <tr><td >还差N人</td><td >$r['need']</td></tr>
+  <tr><td >history</td><td >
+	$for h in r.get('history',[]):
+		$if len(h)>3:
+			<div>$h[0] $h[1] - $h[2] - $h[3]</div>
+		$else:
+			<div>$h[0] $h[1] - $h[2]</div>
+  </td></tr>
+
+</tbody>
+</table>

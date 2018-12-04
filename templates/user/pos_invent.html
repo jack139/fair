@@ -1,0 +1,91 @@
+$def with (name, str1, skus, shop, is_pack, cate, show='1')
+
+$var title: 门店POS
+$var css:
+$var js: 
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #shop2
+
+<div class="caption"><h2>店内库存</h2></div>
+
+<div class="mod_desc">
+	<p>$shop[1] - $shop[2] <a class="abtn" href="/pos/order">订货／收货处理</a></p>
+</div>
+
+<div class="article_box">
+<div> <input type="radio" name="is_pack" value="k" onclick="window.location.href='/pos/inventory?is_pack=k';"
+	$if is_pack=='k':
+		checked="checked"
+    /> 店内库存
+    <input type="radio" name="is_pack" value="w" onclick="window.location.href='/pos/inventory?is_pack=w';"
+	$if is_pack=='w':
+		checked="checked"
+    /> 已称重商品
+    $if is_pack=='w':
+	<span>&nbsp;&nbsp;<a class="abtn" href="/pos/invent_update_price">更新价格</a>&nbsp;&nbsp;
+	<input type="radio" name="show_1" value="1" 
+		onclick="window.location.href='/pos/inventory?is_pack=w&show=1';" 
+	$if show=='1':
+		checked="checked"
+	/> 未销售
+	<input type="radio" name="show_1" value="0" 
+		onclick="window.location.href='/pos/inventory?is_pack=w&show=0';" 
+	$if show=='0':
+		checked="checked"
+	/> 已销售
+	</span>
+</div>
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>ID</th>
+		<th width="25%">品名</th>
+		<!--th>原产地</th-->
+		<th>分类</th>
+		<th>单位</th>
+		<th>参考单价</th>
+		<th>门店单价</th>
+		<th>库存数量</th>
+		$if is_pack=='w':
+			<th>重量</th>
+			<th>价格</th>
+		$else:
+			<th>预付数量</th>
+			<!--th>成本总额</th-->
+			<th>售价总额</th>	
+		<th>App销售</th>
+		<th>上下架</th>
+		<th width="10%">备注</th>
+	</tr>
+</thead>
+<tbody>
+
+$for u in skus:
+  <tr><td><a href="/pos/invent_sku?product_id=$u[5]">$u[5]</a></td>
+  <td>$u[7]</td>
+  <!--td>$u[14]</td-->
+  <td>$cate[u[1][2]]</td>
+  <td>$u[10] $u[11]</td>
+  <td>$u[13]</td>
+  <td>$u[2][0]</td>
+  $if u[5][0]!='w' and u[5][2]=='2':
+  	<td>$('%.2f' % u[6][0])</td>
+  $else:
+  	<td>$('%d' % u[6][0])</td>
+  $if is_pack=='w':
+	<td>$u[3]</td>
+	<td>$u[4]</td>
+  $else:
+  	<td>$('%d' % u[6][1])</td>
+	<!--td>$('%.2f' % (float(u[2][1])*u[6][0]))</td-->
+	<td>$('%.2f' % (float(u[2][0])*u[6][0]))</td>  	
+  <td>$('是' if u[1][1]!=0 else '')</td>
+  <td>$('上架' if u[1][0]==1 else '下架')</td>
+  <td>$u[8]</td>
+  </tr>
+</tbody>
+</table>
+
+</div>

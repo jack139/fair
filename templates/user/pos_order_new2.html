@@ -1,0 +1,48 @@
+$def with (name, str1, skus, shop)
+
+$var title: 门店POS
+$var css:
+$var js: /static/js/pos_order_new2.js?v=1.003
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #shop2
+
+<div class="caption"><h2>订货 － <span>$shop[1]（$shop[2]）</span></h2></div>
+
+<div class="article_box">
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>商品ID</th>
+		<th width="30%">品名</th>
+		<th>原产地</th>
+		<th>单位</th>
+		<th>进货价格</th>
+		<th>库存数量</th>
+		<!--th>昨/今销量</th-->
+		<th>订货数量</th>
+	</tr>
+</thead>
+<tbody>
+
+$for u in skus:
+  <tr><td><a href="/pos/invent_sku?product_id=$u[2]">$u[2]</a></td>
+  <td id="$u[2]_name">$u[4]</td>
+  <td>$u[8]</td>
+  <td>$u[5]</td>
+  <td id="$u[2]_cost">$u[7]</td>
+  $if u[2][2]=='2':
+  	<td>$('%.2f' % u[3])</td>
+  $else:
+  	<td>$('%d' % u[3])</td>
+  <!--td></td-->
+  <td><input class="only4list" type="text" name="$u[2]_num" id="$u[2]" value="" size="8" /></td>
+  </tr>
+</tbody>
+</table>
+
+<input type="button" name="checkout" value="提交订货单" onclick="return checkOut();" />
+<input type="button" value="退出" onclick="location.href='/pos/order';" />
+
+</div>

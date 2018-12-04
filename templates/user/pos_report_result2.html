@@ -1,0 +1,53 @@
+$def with (name, str1, report, sku_count, online, offline, count, date)
+
+$var title: 门店POS
+$var css:
+$var js: 
+$var name: $'|'.join(str1) $name
+$var load: 
+$var menu: #shop4
+
+<div class="caption"><h2>销售记录  <span>按商品汇总（$date）</span></h2></div>
+
+<div class="article_box">
+
+<div>商品个数：共 $sku_count 项</div>
+<div>------------------------------------------------------------</div>
+<div>线上销售：共 $online[0] 元 （$count[0] 笔）</div>
+<div>线上折扣：共 $online[1] 元 </div>
+<div>线上实收：共 $online[2] 元 </div>
+<div>------------------------------------------------------------</div>
+<div>线下销售：共 $offline[0] 元 （$count[1] 笔）</div>
+<div>线下退货：共 $offline[1] 元 （$count[2] 笔）</div>
+<div>线下实收：共 $offline[2] 元</div>
+
+<div><input type="button" name="btn_back" value="返回" onclick="history.go(-1);" /></div>
+
+<table class="props_tb">
+<thead>
+  <tr class="even">
+    <th>商品ID</th>
+    <th>名称</th>
+    <th>线上数量</th>
+    <th>线上成本</th>
+    <th>线上销售</th>
+    <th>线下数量</th>
+    <th>线下成本</th>
+    <th>线下销售</th>
+  </tr>
+</thead>
+<tbody>
+$for u in report.keys():
+  <tr>
+  <td>$u</td>
+  <td>$report[u]['name']</td>
+  <td>$('%.2f' % report[u]['online']['num'])</td>
+  <td>$('%.2f' % report[u]['online']['cost'])</td>
+  <td>$('%.2f' % report[u]['online']['price'])</td>
+  <td>$('%.2f' % report[u]['offline']['num'])</td>
+  <td>$('%.2f' % report[u]['offline']['cost'])</td>
+  <td>$('%.2f' % report[u]['offline']['price'])</td>
+  </tr>
+</tbody>
+</table>
+</div>

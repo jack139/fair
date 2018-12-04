@@ -1,0 +1,40 @@
+$def with (name, str1, shops)
+
+$var title: 平台管理
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #plat4
+
+<div class="caption"><h2>站点基础资料</h2></div>
+
+<p><a class="abtn" href="/plat/base_shop_new">添加新站点</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a class="abtn" href="/plat/base_shop_map">站点地图</a>
+</p>
+
+
+<table class="props_tb">
+<thead>
+        <tr class="even">
+        	<th>站点</th>
+                <th>类型</th>
+                <th>图片</th>
+                <th>状态</th>
+                <th>备注</th>
+        </tr>
+</thead>
+<tbody>
+
+$for u in shops:
+  <tr><td><a href="/plat/base_shop_edit?base_shop=$u[0]">$u[1]</a></td>
+  <td>$u[5]</td>
+  <td>
+    $if u[4]!='':
+      <img width="64" src="/static/image/product/$(u[4][:2])/$u[4]" />
+  </td>
+  <td>$('在使用' if u[3]==1 else '停用')</td>
+  <td>$u[2]</td></tr>
+
+</tbody></table>
+

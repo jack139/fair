@@ -1,0 +1,202 @@
+$def with (name, str1, shop, shop_type)
+
+$var title: 平台管理
+$var css:
+$var name: $'|'.join(str1) $name
+$var js: http://api.map.baidu.com/api?v=2.0&ak=FwPIA1ykPKIGgSL2jsyoAdSW
+$var load: 
+$var menu: #plat4
+
+<div class="caption"><h2>修改站点基础资料</h2></div>
+
+<form name="settings" method="post" action="/plat/base_shop_edit">
+<input type="hidden" name="base_shop" value="$shop['_id']"/>
+
+<table class="props_tb">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+                <th>内容</th>
+                <th>说明</th>
+        </tr>
+</thead>
+<tbody>
+
+<tr><td>站点名</td><td>
+	<input type="text" name="shop_name" value="$:shop['name']"/>
+	</td><td>必填</td></tr>
+<tr><td>简称</td><td>
+	<input type="text" name="shortname" value="$:shop['shortname']"/>
+	</td><td>内部使用</td></tr>
+<tr><td>简介</td><td>
+	<textarea rows="3" name="abstract">$:shop['abstract']</textarea>
+	</td><td></td></tr>
+<tr><td>地址</td><td>
+	<textarea rows="3" name="address">$:shop['address']</textarea>
+	</td><td></td></tr>
+<tr><td>坐标</td><td>$:shop['loc']['lat'],$:shop['loc']['lng']
+	</td><td></td></tr>
+<tr><td>图片</td><td>
+	<ul id="image-list">
+	$if shop.has_key('image') and len(shop['image'])>0:
+	   $for i in shop['image']:
+	   	$if len(i)>0:
+	   	  <li><img src="/static/image/product/$(i[:2])/$i"/></li>
+	</ul>
+	</td><td></td></tr>
+<tr><td>店员数量</td><td>
+	<input type="text" name="people" value="$shop['people']"  size="8"
+	pattern="[1-9][0-9]*" title="必须是大于0的整数"/> 人
+	</td><td>不能为0</td></tr>
+<tr><td>类型</td><td>
+	<select name="type" id="type">
+	$for i in shop_type.keys():
+		<option value="$i"
+			$if shop['type']==i:
+				selected="selected"
+		>$shop_type[i]</option>
+	</select>
+	</td><td></td></tr>
+<tr><td>线上销售</td><td>
+    <input type="radio" name="app_shop" value="1"  
+    $if shop['app_shop']==1:
+       checked="checked" 
+    /> 是
+    <input type="radio" name="app_shop" value="0" 
+    $if shop['app_shop']==0:
+       checked 
+    /> 否
+    </td><td></td></tr>
+<tr><td>派送半径</td><td>
+	<input type="text" name="radius" value="$shop['radius']"  size="8"
+	pattern="[0-9]*" title="必须是整数"/> 公里
+	</td><td>不能小于0</td></tr>
+<tr><td>派送范围</td><td>
+	<div id="allmap" style="height:300px; width: 100%;"></div>
+	<div><span>
+	地址：<input type="text" id="addr" value="" size="10"/> 
+	<button onclick = "get_point($$('#addr').val());return false;">查找</button>
+	</span></div>
+	<input type="text" name="poly" id="message" value="$shop.get('poly','')" size="50"/>
+	</td><td>以英文分号分隔地址列表</td></tr>
+<tr><td>派送坐标</td><td>
+	$for i in shop.get('poly_xy',[]):
+		$str(i)<br/>
+</td><td></td></tr>
+<tr><td>加工能力</td><td>
+    <input type="radio" name="worker" value="1"  
+    $if shop['worker']==1:
+       checked="checked" 
+    /> 可以加工
+    <input type="radio" name="worker" value="0" 
+    $if shop['worker']==0:
+       checked 
+    /> 不能加工
+    </td><td></td></tr>
+<tr><td>状态</td><td>
+    <input type="radio" name="available" value="1"  
+    $if shop['available']==1:
+       checked="checked" 
+    /> 在使用
+    <input type="radio" name="available" value="0" 
+    $if shop['available']==0:
+       checked 
+    /> 停用
+    </td><td></td></tr>
+<tr><td>备注</td><td>
+	<textarea rows="3" name="note">$:shop['note']</textarea>
+	</td><td>内部备注</td></tr>
+</tbody></table>
+
+<p><input type="submit" name="button" id="button" value="保存" />
+<input type="button" name="cancel" value="返回" onclick="history.go(-1);" /></p>
+</form>
+
+<div class="article_box">
+  <div>操作日志：</div>
+  <textarea rows="8" cols="80" id="history">
+  $for h in shop['history']:
+      $h[0]，用户：$h[1]，操作：$h[2]；
+  </textarea>
+</div>
+<br/>
+
+<script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	var myGeo = new BMap.Geocoder();
+	var polygon = null;
+	var edit = false;
+
+	poly_data = "$shop.get('poly','')".split(";");
+	pp = [];
+
+	$$.each(poly_data, function(i, item){
+		b=item.substr(1,item.length-2).split(",");
+		pp[i] = new BMap.Point(eval(b[1]),eval(b[0]));
+	});
+
+	polygon = new BMap.Polygon(pp, {strokeColor:"black", strokeWeight:2, strokeOpacity:0.5});
+
+	map.centerAndZoom(pp[0], 14);
+	map.enableScrollWheelZoom();
+
+	polygon.addEventListener("click", function(){    
+		if (edit){
+			finish_point();
+		}
+		else{
+			edit_point();
+		}
+	});
+	map.addOverlay(polygon);
+
+	//$$("#control").hide();
+
+	function get_point(addr){
+		myGeo.getPoint(addr, function(point){
+			if (point) {
+				map.centerAndZoom(point, 14);
+				map.clearOverlays();
+				polygon = new BMap.Polygon([
+					point,
+					new BMap.Point(point['lng']+0.005,point['lat']+0.005),
+					new BMap.Point(point['lng'],point['lat']+0.005),
+				], {strokeColor:"black", strokeWeight:2, strokeOpacity:0.5});
+				polygon.addEventListener("click", function(){    
+					if (edit){
+						finish_point();
+					}
+					else{
+						edit_point();
+					}
+				});
+				map.addOverlay(polygon);
+			}else{
+				alert("您选择地址没有解析到结果!");
+			}
+		}, "上海市");
+	}
+
+	function edit_point(){
+		polygon.enableEditing();
+		edit=true;
+
+		return false;
+	}
+
+	function finish_point(){
+ 		var p = polygon.getPath();       //获取位置
+ 		var s = '';
+ 		$$.each(p, function(i, item){
+ 			if (s!='') s += ';';
+ 			s = s+'('+item['lat']+','+item['lng']+')'
+ 		});
+		$$("#message").val(s);
+		polygon.disableEditing();
+		edit=false;
+
+		return false;
+	}
+</script>
+

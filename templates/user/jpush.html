@@ -1,0 +1,29 @@
+$def with (name, str1)
+
+$var title: App消息推送
+$var css:
+$var js: 
+$var name: $'|'.join(str1) $name
+$var load: InitInit();
+$var menu: #plat5
+
+<script type="text/javascript">
+function InitInit(){
+}
+</script>
+
+<div class="caption"><h2>App消息推送</h2></div>
+
+<form name="jpush" method="post" action="/plat/push_msg">
+<div class="article_box">
+<p>推送号码： (注意：1. 不填则发所有用户；2.多个号码以英文逗号分隔，一次最多1000个号码。)</p>
+<p><textarea rows="5" name="phone" cols="80"></textarea></p>
+<p>推送内容：</p>
+<p><textarea rows="3" name="content" cols="100"></textarea></p>
+</div>
+
+<p><input type="submit" name="button" id="button" value="发送"
+	onclick="if (confirm('确定发送吗？')) return true; else return false;"/><p>
+</form>
+
+<br/>

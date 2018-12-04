@@ -1,0 +1,66 @@
+$def with (name, str1, report, shop, total_sum)
+
+$var title: 批量处理订单
+$var css:
+$var js: /static/js/batch_job.js?ver=1.0
+$var name: $'|'.join(str1) $name
+$var load: 
+$var menu: #shop8
+
+<div class="caption"><h2>批量处理订单  <span>$shop</span></h2></div>
+
+<div class="article_box">
+
+<p><input type="button" onclick="location.href='/online/batch_job';" value="手动刷新" /></p>
+
+<table class="props_tb">
+<thead>
+  <tr class="even">
+    <th rowspan="2">商品ID</th>
+    <th  rowspan="2" width='40%'>名称</th>
+    $for i in total_sum.keys():
+	    <th colspan="3">$i</th>
+  </tr>
+  <tr class="even">
+    $for i in total_sum.keys():
+	    <th>待拣货</td>
+	    <th>待配送</td>
+	    <th>配送中</td>
+  </tr>
+</thead>
+<tbody>
+
+$for u in report.keys():
+  <tr>
+  <td>$u</td>
+  <td>$report[u]['name']</td>
+  $for j in total_sum.keys():
+	  <td><a href="/online/batch_paid?tuan_id=$report[u]['tuan_id']&sheng=$j">$('%d' % report[u].get(j,{'paid':0})['paid'])</a></td>
+	  <td><a href="/online/batch_list?tuan_id=$report[u]['tuan_id']&status=DISPATCH&sheng=$j">$('%d' % report[u].get(j,{'dispatch':0})['dispatch'])</a></td>
+	  <td><a href="/online/batch_list?tuan_id=$report[u]['tuan_id']&status=ONROAD&sheng=$j">$('%d' % report[u].get(j,{'onroad':0})['onroad'])</a></td>
+  </tr>
+<tr>
+<td>合计</td>
+<td> </td>
+$for j in total_sum.keys():
+	<td>$total_sum[j]['paid']</td>
+	<td>$total_sum[j]['dispatch']</td>
+	<td>$total_sum[j]['onroad']</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="article_box">
+<h3>扫描待派送订单</h3>
+<p>订单号：<input type="text" size="30" value="" id="single_order_id" onfocus="$$(this).select();"
+		onkeypress="if(event.keyCode==13) to_dispatch();"/>
+	<input type="button" onclick="return to_dispatch();" value="开始配送" />（订单状态将变为 ONROAD 配送中）</p>
+
+</div>
+
+<div class="article_box">
+<h3>操作记录:</h3>
+<div id="action_log"></div> 
+</div>
+

@@ -1,0 +1,68 @@
+$def with (name, str1, sku, base_sku, unit_type, shop, inventory_num)
+
+$var title: 门店POS
+$var css:
+$var name: $'|'.join(str1) $name
+$var js: /static/js/weight.js?v=1.001 /static/qz-print/deployJava.js /static/qz-print/qz-print.js
+$var load: first();
+$var menu: #shop2
+
+<script type="text/javascript">
+unit_price=parseFloat($inventory_num[1]);
+//inventory_num=parseFloat($inventory_num[0]);
+
+var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+if (isWin){
+	ableToPrint = true;
+	/** * Deploy QZ applet */
+	window["deployQZ"] = deployQZApplet;
+	deployQZApplet();
+	//$$("#product_id").focus();
+}
+else{
+	ableToPrint = false;
+	alertify.warning("只有Windows平台支持打印功能");
+}
+</script>
+
+<div class="caption"><h2>称重</h2></div>
+<input type="hidden" name="sku" id="id_sku" value="$sku['_id']"/>
+<input type="hidden" name="product_id" id="id_product_id" value="$sku['product_id']"/>
+<input type="hidden" name="shop" id="id_shop" value="$shop[0]"/>
+<input type="hidden" name="price" id="id_price" value="$inventory_num[1]"/>
+
+<table class="props_tb" id="qz-status" bgcolor="#FFF380">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+                <th>内容</th>
+                <th>说明</th>
+        </tr>
+</thead>
+<tbody>
+<tr><td>ID</td><td>$sku['product_id']</td><td></td></tr>
+<tr><td>品名</td><td id="id_name">$base_sku['name']</td><td></td></tr>
+<tr><td>原产地</td><td>$base_sku['original']</td><td></td></tr>
+
+<tr><td>销售单位</td><td id="id_unit">$unit_type[sku['unit']]</td><td></td></tr>
+<tr><td>定价方式</td><td>
+	$if sku["product_id"][2]==1: 整进整出
+	$elif sku["product_id"][2]==2: 散进散出
+	$else: 散进整出
+    </td><td></td></tr>
+<tr><td>门店单价</td><td id="id_price">$inventory_num[1] 元</td><td></td></tr>
+
+<tr id="invent"><td>站点库存</td><td><div id="inventory_num">$inventory_num[0]</div></td><td>$shop[1] - $shop[2]</td></tr>
+
+<tr><td><b>称重操作</b></td><td colspan="2"></td></tr>
+<tr><td>重量</td><td><input type="input" name="weight" id="weight" onkeyup="check_key();"  
+	onkeypress="if(event.keyCode==13) doWeight();" onfocus="$$(this).select();"
+	pattern="[0-9]+[.]{0,1}[0-9]*" title="必须是数字"/></td>
+	<td>$unit_type[sku['unit']]</td></tr>
+<tr><td>价格</td><td><div id="price_show">0</div></td><td>元</td></tr>
+</tbody></table>
+<p><input type="button" name="refresh" value="保存" onclick="doWeight();"/>
+<input type="button" name="cancel" value="返回" onclick="location.href='/pos/inventory';" /><p>
+
+
+<br/>

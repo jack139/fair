@@ -1,0 +1,118 @@
+$def with (name, str1, shop, shop_type)
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>店面POS - Urfresh</title>
+	<link rel="stylesheet" href="/static/css/alertify.min.css" />
+	<link rel="stylesheet" href="/static/css/themes/default.min.css" />
+	<link rel="stylesheet" href="/static/css/layout2.css" />
+	<script type="text/javascript" src="/static/qz-print/deployJava.js"></script>
+	<script type="text/javascript" src="/static/qz-print/qz-print.js"></script>
+	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/js/alertify.min.js"></script>
+	<script type="text/javascript" src="/static/js/pos.js?v=1.004"></script>
+</head>
+<body class="whole_body">
+<script type="text/javascript">
+var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+if (isWin){
+	ableToPrint = true;
+	/** * Deploy QZ applet */
+	window["deployQZ"] = deployQZApplet;
+	deployQZApplet();
+	//$$("#product_id").focus();
+}
+else{
+	ableToPrint = false;
+	alertify.warning("只有Windows平台支持打印功能");
+}
+
+$$(function () {
+	if (!ableToPrint)
+		document.getElementById("qz-status").style.background = "#FFFFFF";
+	$$("#product_id").focus();
+});
+</script>
+
+<div class="wrapper">
+
+<div class="content2">
+
+<!-- main content start here -->
+
+<div class="caption"><h2>销货 － <span id="id_shop_name">$shop['name']（$shop_type[shop['type']]）</span></h2></div>
+
+<p>商品代码：<input type="text" name="product_id" id="product_id" value="" onfocus="$$(this).select();"
+onkeypress="if(event.keyCode==13) keyPress(this);"/>
+<input type="button" name="add_item" value="添加" onclick="return addItem();" /></p>
+
+<table class="props_tb" id="qz-status" bgcolor="#FFF380">
+<thead>
+	<tr class="even">
+		<th>商品代码</th>
+		<th>品名</th>
+		<th>销售方式</th>
+		<th>单价</th>
+		<th>单位</th>
+		<th>数量</th>
+		<th>价格小计</th>
+		<th>操作</th>
+	</tr>
+</thead>
+<tbody>
+   <tr id="item_list"><td colspan="8">&nbsp;</td></tr>
+</tbody>
+<tfoot>
+   <tr class="even" id="foot_list">
+      <td colspan="5"></td>
+      <td>总计</td>
+      <td class="name"><div id="total_price">0<div></td>
+      <td>&nbsp;</td>
+    </tr>
+  </tfoot>
+</table>
+
+<div>销货单号：<span id="order_id"></span></div>
+<div>项目数量：<span id="count_id">0</span></div>
+
+<p>
+
+<div id="checkout_div">
+<input type="button" name="checkout" value="结算" onclick="return checkOut();" />
+<input type="button" value="取消" onclick="initAll();" />
+<input type="button" value="退出" onclick="location.href='/';" />
+</div>
+
+<div id="pay_div" style="display:none;">
+<input type="text" name="pay_num" id="pay_num" value="" onfocus="$$(this).select();"
+onkeypress="if(event.keyCode==13) return doPay();"/>
+<input type="button" name="pay" value="付款" onclick="return doPay();"/>
+<input type="button" value="取消" onclick="return doCancel();" />
+</div>
+
+<div id="paid_div" style="display:none;">
+<input type="button" name="print" value="打印小票"  id="btn_print" onclick="doPrint();" />
+<input type="button" name="new_one" value="下一单"  id="btn_next" onclick="initAll();" />
+<input type="button" value="退出" onclick="location.href='/';" />
+</div>
+
+</p>
+
+<br/>
+
+<!-- main content end here -->
+
+<div class="footer">
+	<p>copyright &copy; 2015 urfresh.cn</p>
+</div>
+
+</div>    
+
+</div>
+    
+</body>
+</html>
+
+

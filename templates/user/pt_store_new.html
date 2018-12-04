@@ -1,0 +1,110 @@
+$def with (name, str1, region_name)
+
+$var title: 平台管理
+$var css:
+$var name: $'|'.join(str1) $name
+$var js: /static/js/upload.js?v=1.010
+$var load: doFirst();
+$var menu: #plat6
+
+<div class="caption"><h2>新建拼团活动</h2></div>
+
+<form name="settings" method="post" action="/plat/pt_store_new">
+<input type="hidden" name="image" id="form_image" value=""/>
+
+<table class="props_tb">
+<thead>
+        <tr class="even">
+        	<th>项目</th>
+                <th>内容</th>
+                <th width="25%">说明</th>
+        </tr>
+</thead>
+<tbody>
+
+<tr><td>区域</td><td>
+<select multiple="multiple" size="5" name="region_id">
+$for i in region_name.keys():
+	<option value ="$i">$region_name[i]</option>
+</select>    
+</td><td>必选，可多选</td></tr>
+
+<tr><td>活动名称</td><td>
+	<input type="text" size="60" name="title" value=""/>
+	</td><td>必填</td></tr>
+<tr><td>文描</td><td>
+	<textarea rows="5" cols="60" name="desc" size="100"></textarea>
+	</td><td>不超过30个中文字符</td></tr>
+
+<tr><td>结束日期</td><td>
+	<input type="text" name="expire_time" value=""
+	pattern="20[0-9]{2}-[0-9]{2}-[0-9]{2}" title="日期格式 YYYY-MM-DD"/>
+	</td><td>必填, 格式 YYYY-MM-DD</td></tr>
+
+<tr><td>成团人数</td><td>
+	<input type="text" name="tuan_size" value="" 
+	pattern="[0-9]+" title="必须是数字"/>
+	</td><td>必填，大于零</td></tr>
+
+<tr><td>单人购售价</td><td>
+	<input type="text" name="price" id="price" value="0.00"
+	pattern="[0-9]+[.]{0,1}[0-9]*" title="必须是数字"/> 元
+	</td><td>必填</td></tr>
+
+<tr><td>拼团售价</td><td>
+	<input type="text" name="tuan_price" id="tuan_price" value="0.00"
+	pattern="[0-9]+[.]{0,1}[0-9]*" title="必须是数字"/> 元
+	</td><td>必填</td></tr>
+
+<tr><td>市场参考售价</td><td>
+	<input type="text" name="ref_price" id="ref_price" value="0.00"
+	pattern="[0-9]+[.]{0,1}[0-9]*" title="必须是数字"/> 元
+	</td><td>必填</td></tr>
+
+<tr><td>App推荐标签</td><td>
+    <input type="radio" name="promote" value="1"  /> 显示
+    <input type="radio" name="promote" value="0" checked="checked"/> 不显示
+    </td><td></td></tr>
+
+<tr><td>App显示排序权重</td><td>
+	<input type="text" name="sort_weight" value="999" 
+	pattern="[0-9]+" title="必须是数字"/>
+	</td><td>0排最前，数值最大排最后</td></tr>
+
+<tr><td>销售状态</td><td>
+    <input type="radio" name="sale_out" value="0" checked="checked" /> 在售
+    <input type="radio" name="sale_out" value="1" /> 售罄
+    </td><td>首页展示为已售罄状态，用户无法继续开团或参团</td></tr>
+
+<tr><td>指定区域上架</td><td>
+<select multiple="multiple" size="5" name="shop_online">
+$for i in region_name.keys():
+	<option value ="$i">$region_name[i]</option>
+</select>    
+</td><td>选中上架，可多选；取消选中后，该地区商品下架；下架商品不在首页显示，用户不能开团但可以参团</td></tr>
+
+<tr><td>图片</td><td>
+	<ul id="image-list"></ul>
+	</td><td>在页面下方上传图片:<br/> 图1：微信分享图 300X300px <br/> 图2：商品缩略图 254X192px <br/> 图3：首页商品banner图 702X328px <br/>图4之后：商品详情图750X470px</td></tr>
+
+<tr><td>备注</td><td>
+	<textarea rows="5" cols="60" name="note"></textarea>
+	</td><td>内部备注</td></tr>
+
+</tbody></table>
+<p><input type="submit" name="button" id="button" value="保存" />
+<input type="button" name="cancel" value="返回" onclick="history.go(-1);" /><p>
+</form>
+
+<div class="article_box">
+  <div id="image-main">
+    <form method="post" enctype="multipart/form-data"  action="">
+      <input type="file" name="images" id="images" />
+      <button type="submit" id="btn">上传图片</button>
+    </form> 
+    <div id="response"></div>
+  </div>
+</div>
+
+<br/>
+<div>&nbsp;</div>

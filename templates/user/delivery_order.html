@@ -1,0 +1,40 @@
+$def with (name, str1, orders, order_status, status)
+
+$var title: 快递员UI
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$if status=='DISPATCH':
+	$var menu: #deli1
+	<div class="caption"><h2>待配送 订单</h2></div>
+$elif status=='ONROAD':
+	$var menu: #deli2
+	<div class="caption"><h2>配送中 订单</h2></div>
+$elif status=='COMPLETE':
+	$var menu: #deli3
+	<div class="caption"><h2>已️完成 订单</h2></div>
+$else:
+	$var menu: #deli4
+	<div class="caption"><h2>其他 订单</h2></div>
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>订单编号</th>
+		<th>状态</th>
+		<th>收货地址</th>
+		<th>最后处理时间</th>
+	</tr>
+</thead>
+<tbody>
+
+$for u in orders:
+  <tr><td><a href="/delivery/order_view?order=$u['order_id']&status=$u['status']">$str(u['order_id'])</a></td>
+  <td>$order_status['APP'][u['status']] － $u['status']</td>
+  <td>$u['address'][3]/$u['address'][1]/$u['address'][2]</td>
+  <td>$u['history'][-1][0]</td>
+  </tr>
+
+</tbody></table>
+

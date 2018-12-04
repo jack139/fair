@@ -1,0 +1,64 @@
+$def with (name, str1, shop, shop_type)
+
+$var title: 门店POS
+$var css:
+$var js: /static/js/pos_print_label.js?v=1.002 /static/qz-print/deployJava.js /static/qz-print/qz-print.js
+$var name: $'|'.join(str1) $name
+$var load: first();
+$var menu: #shop6
+
+<script type="text/javascript">
+var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+if (isWin){
+	ableToPrint = true;
+	/** * Deploy QZ applet */
+	window["deployQZ"] = deployQZApplet;
+	deployQZApplet();
+	//$$("#product_id").focus();
+}
+else{
+	ableToPrint = false;
+	alertify.warning("只有Windows平台支持打印功能");
+}
+</script>
+
+
+<div class="caption"><h2>打印标签 － $shop['name']（$shop_type[shop['type']]）</h2></div>
+
+<p>商品代码：<input type="text" name="product_id" id="product_id" value="" onfocus="$$(this).select();"
+onkeypress="if(event.keyCode==13) keyPress(this);"/>
+<input type="button" name="add_item" value="添加" onclick="return addItem();" /></p>
+<table class="props_tb" id="qz-status" bgcolor="#FFF380">
+<thead>
+	<tr class="even">
+		<th>商品代码</th>
+		<th>品名</th>
+		<th>销售方式</th>
+		<th>单价</th>
+		<th>单位</th>
+		<th>数量</th>
+		<th>价格小计</th>
+		<th>操作</th>
+	</tr>
+</thead>
+<tbody>
+   <tr id="item_list"><td colspan="8">&nbsp;</td></tr>
+</tbody>
+<tfoot>
+   <tr class="even" id="foot_list">
+      <td colspan="8">&nbsp;</td>
+    </tr>
+  </tfoot>
+</table>
+<p>
+
+<div id="checkout_div">
+<input type="button" name="checkout" value="打印" onclick="return doPrint();" />
+<input type="button" value="取消" onclick="initAll();" />
+<input type="button" value="退出" onclick="location.href='/pos/order';" />
+</div>
+
+</p>
+
+<br/>
+

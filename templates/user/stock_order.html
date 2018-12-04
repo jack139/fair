@@ -1,0 +1,33 @@
+$def with (name, str1, orders, order_status, shops)
+
+$var title: 仓储管理
+$var css:
+$var js:
+$var name: $'|'.join(str1) $name
+$var load:
+$var menu: #stoc3
+
+<div class="caption"><h2>工单管理</h2></div>
+
+<table class="props_tb">
+<thead>
+	<tr class="even">
+		<th>工单编号</th>
+		<th>类型</th>
+		<th>门店</th>
+		<th>状态</th>
+		<th>最后处理时间</th>
+	</tr>
+</thead>
+<tbody>
+
+$for u in orders:
+  <tr><td><a href="/stock/order_view?order=$u['_id']">$str(u['_id'])[-6:]</a></td>
+  <td>$order_status[u['type']]['name']</td>
+  <td>$shops[u['shop_to']]</td>
+  <td>$order_status[u['type']][u['status']] － $u['status']</td>
+  <td>$u['history'][-1][0]</td>
+  </tr>
+
+</tbody></table>
+

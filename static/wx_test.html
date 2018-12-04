@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+<meta charset="UTF-8">
+<title>wx test</title>
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+</head>
+
+<body>
+
+<h2>连接导向 get_host</h2>
+<form name="2" method="post" action="/wx/get_host">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_2" name="openid" value=""/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>查询门店 locate_shop</h2>
+<form name="3" method="post" action="/wx/locate_shop">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_3" name="openid" value=""/></div>
+<div>type: <input id="type_3" name="type" value="NAME"/></div>
+<div>data: <input id="data_3" name="data" value="高斯路"/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>获取全局参数 get_settings</h2>
+<form name="4" method="post" action="/wx/get_settings">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_4" name="openid" value=""/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>查询商品 sku_list</h2>
+<form name="5" method="post" action="/wx/sku_list">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_5" name="openid" value=""/></div>
+<div>shop_id: <input id="shop_id_5" name="shop_id" value=""/></div>
+<div>category: <input id="category_5" name="category" value="001"/></div>
+<div>page_size: <input id="page_size_5" name="page_size" value="6"/></div>
+<div>page_index: <input id="page_index_5" name="page_index" value="0"/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>商品详情 sku_detail</h2>
+<form name="6" method="post" action="/wx/sku_detail">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_6" name="openid" value=""/></div>
+<div>shop_id: <input id="shop_id_6" name="shop_id" value=""/></div>
+<div>product_id: <input id="product_id_6" name="product_id" value="k000010"/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>用户绑定电话号码 user_phone</h2>
+<form name="7" method="post" action="/wx/user_phone">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_7" name="openid" value=""/></div>
+<div>number: <input id="number_7" name="number" value="13194084665"/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+
+<h2>核对验证码 user_check_rand</h2>
+<form name="8" method="post" action="/wx/user_check_rand">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_8" name="openid" value=""/></div>
+<div>rand: <input id="rand_8" name="rand" value=""/></div>
+<div>invitation: <input id="invitation_8" name="invitation" value=""/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>获取所有收货地址 addr_list</h2>
+<form name="10" method="post" action="/wx/addr_list">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_10" name="openid" value=""/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+
+<h2>新增收货地址 addr_list</h2>
+<form name="11" method="post" action="/wx/addr_add">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_11" name="openid" value=""/></div>
+<div>name: <input id="name_11" name="name" value="王二"/></div>
+<div>tel: <input id="tel_11" name="tel" value="1380000000"/></div>
+<div>addr: <input id="addr_11" name="addr" value="高斯路1122弄"/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>修改收货地址 addr_list</h2>
+<form name="11a" method="post" action="/wx/addr_modify">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_11a" name="openid" value=""/></div>
+<div>addr_id: <input id="addr_id_11a" name="addr_id" value=""/></div>
+<div>name: <input id="name_11a" name="name" value="王二"/></div>
+<div>tel: <input id="tel_11a" name="tel" value="1380000000"/></div>
+<div>addr: <input id="addr_11a" name="addr" value="高斯路1122弄"/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>获取优惠券清单 coupon_list</h2>
+<form name="12" method="post" action="/wx/coupon_list">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_12" name="openid" value=""/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>提交购物车结算 order_checkout</h2>
+<form name="13" method="post" action="/wx/order_checkout">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_13" name="openid" value=""/></div>
+<div>order_id: <input id="order_id_13" name="order_id" value=""/></div>
+<div>shop_id: <input id="shop_id_13" size="50" name="shop_id" value=""/></div>
+<div>addr_id: <input id="addr_id_13" name="addr_id" value="kcea"/></div>
+<div>coupon_id: <input id="coupon_id_13" name="coupon_id" value="fitf"/></div>
+<div>cart: <input id="cart_13" name="cart" size="100" value='[{"product_id":"k000008","num":5}]'/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+
+<h2>支付完成 order_pay</h2>
+<form name="14" method="post" action="/wx/order_pay">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_14" name="openid" value=""/></div>
+<div>order_id: <input id="order_id_14" name="order_id" value=""/></div>
+<div>pay_type: <input id="pay_type_14" size="50" name="pay_type" value=""/></div>
+<div>data: <input id="data_14" name="data" value=""/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>订单列表 order_list</h2>
+<form name="15" method="post" action="/wx/order_list">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_15" name="openid" value=""/></div>
+<div>query: <input id="query_15" name="query" value="ALL"/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+
+<h2>订单详情 order_detail</h2>
+<form name="16" method="post" action="/wx/order_detail">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_16" name="openid" value=""/></div>
+<div>order_id: <input id="order_id_16" name="order_id" value=""/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>取消订单 order_cancel</h2>
+<form name="17" method="post" action="/wx/order_cancel">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_17" name="openid" value=""/></div>
+<div>order_id: <input id="order_id_17" name="order_id" value=""/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>微信支付 wxpay</h2>
+<form name="19" method="post" action="/wx/wxpay">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_19" name="openid" value=""/></div>
+<div>order_id: <input id="order_id_19" name="order_id" value=""/></div>
+<div>total: <input id="total_19" name="total" value="1"/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+</body>
+
+<h2>订单打分 order_star</h2>
+<form name="20" method="post" action="/wx/order_star">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_20" name="openid" value=""/></div>
+<div>order_id: <input id="order_id_20" name="order_id" value=""/></div>
+<div>star: <input id="star_20" name="star" value=""/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+<h2>获取帐户余额 get_credit</h2>
+<form name="21" method="post" action="/wx/get_credit">
+<div>session_id: <input id="session_id" name="session_id" value="" size="50"/></div>
+<div>openid: <input id="app_id_21" name="openid" value=""/></div>
+<div><input type="submit" value="提交" /></div>
+</form>
+<br/>
+
+</html>
